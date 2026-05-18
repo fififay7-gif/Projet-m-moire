@@ -6,8 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Produit extends Model
 {
-    // C'est ici que vous définissez les champs autorisés (fillable)
-    protected $fillable = ['nom', 'description', 'quantite', 'prix', 'seuil_alerte'];
+    protected $fillable = [
+        'nom',
+        'quantite',
+        'categorie',
+        'agence',
 
-    // Vos relations éventuelles
+    ];
+
+    public function mouvements()
+    {
+        return $this->hasMany(Mouvement::class);
+    }
+
+    public function alertes()
+    {
+        return $this->hasMany(AlerteStock::class);
+    }
+
+    public function fichesIA()
+    {
+        return $this->hasMany(FicheIA::class);
+    }
 }

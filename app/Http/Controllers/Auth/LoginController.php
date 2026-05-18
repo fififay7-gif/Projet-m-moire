@@ -1,41 +1,95 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
+     * Connexion utilisateur
      */
-    protected $redirectTo = '/home';
+    public function login(Request $request)
+    {
+
+        // VALIDATION
+        $request->validate([
+
+            'email' => 'required|email',
+
+            'password' => 'required'
+
+        ]);
+
+        // TENTER CONNEXION
+        if (Auth::attempt($request->only('email', 'password'))) {
+
+            // REGENERER SESSION
+            $request->session()->regenerate();
+
+            // USER CONNECTÉ
+            $user = Auth::user();
+
+
+
+            // FORCER CHANGEMENT PASSWORD
+            if ($user->must_change_password == true) {
+
+                return redirect('/change-password');
+            }
+
+            // ADMIN
+            if ($user->role === 'admin') {
+
+                return redirect('/admin/dashboard');
+
+            }
+
+            // USER
+             // CHANGER PASSWORD
+    if ($user->must_change_password) {
+
+        return redirect('/change-password');
+
+    }
+
+    // ADMIN
+    if ($user->role === 'admin') {
+
+        return redirect('/admin/dashboard');
+
+    }
+
+    // USER
+    return redirect('/user/dashboard');
+
+        }
+
+        // ERREUR LOGIN
+        return back()->withErrors([
+
+            'email' => 'Email ou mot de passe incorrect'
+
+        ]);
+
+    }
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Déconnexion
      */
-    // SUPPRIMEZ CE BLOC DANS VOTRE CONTROLEUR
-public function __construct()
-{
-    $this->middleware('guest')->except('logout');
-    $this->middleware('auth')->only('logout');
-}
+    public function logout(Request $request)
+    {
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+
+    }
+
 }

@@ -4,215 +4,209 @@
 
 <style>
 
-    .page-title{
-        color:#1e3a8a;
-        margin-bottom:25px;
-    }
+body{
+    background:#f5f7fb;
+}
 
-    .cards{
-        display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-        gap:20px;
-        margin-bottom:30px;
-    }
+/* ===== TITRE ===== */
+.stock-title{
+    color:#1e3a8a;
+    margin-bottom:20px;
+    font-weight:bold;
+}
 
-    .card-box{
-        background:white;
-        padding:20px;
-        border-radius:15px;
-        box-shadow:0 5px 15px rgba(0,0,0,0.08);
-    }
+/* ===== SUCCESS ===== */
+.success{
+    background:#dcfce7;
+    color:#166534;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
+    border-left:5px solid #22c55e;
+}
 
-    .card-box h3{
-        color:#1e3a8a;
-        margin-bottom:10px;
-    }
+/* ===== TABLE ===== */
+.stock-table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
 
-    .btn{
-        display:inline-block;
-        margin-top:15px;
-        padding:10px 15px;
-        background:#2563eb;
-        color:white;
-        text-decoration:none;
-        border-radius:8px;
-        transition:0.3s;
-    }
+/* HEADER BLEU */
+.stock-table th{
+    background: linear-gradient(135deg,#1e3a8a,#2563eb);
+    color:white;
+    padding:14px;
+    text-align:center;
+}
 
-    .btn:hover{
-        background:#1e3a8a;
-    }
+/* CELLS */
+.stock-table td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
 
-    table{
-        width:100%;
-        border-collapse:collapse;
-        background:white;
-        border-radius:15px;
-        overflow:hidden;
-        box-shadow:0 5px 15px rgba(0,0,0,0.08);
-    }
+/* HOVER ROW */
+.stock-table tr:hover{
+    background:#f0f4ff;
+}
 
-    table th{
-        background:#1e3a8a;
-        color:white;
-        padding:15px;
-    }
+/* ===== ORANGE EMS BOOSTÉ ===== */
+:root{
+    --ems-orange:#ff6a00;
+    --ems-orange-dark:#e65c00;
+    --ems-orange-soft:#fff1e6;
+}
 
-    table td{
-        padding:15px;
-        border-bottom:1px solid #ddd;
-        text-align:center;
-    }
+/* STOCK FAIBLE (ORANGE ALERT) */
+.low-stock{
+    background: var(--ems-orange-soft);
+    color: var(--ems-orange);
+    font-weight:bold;
+    padding:6px 10px;
+    border-radius:8px;
+    border-left:4px solid var(--ems-orange);
+}
 
-    .stock-ok{
-        color:green;
-        font-weight:bold;
-    }
+/* STOCK OK */
+.ok-stock{
+    background:#dcfce7;
+    color:#16a34a;
+    font-weight:bold;
+    padding:6px 10px;
+    border-radius:8px;
+}
 
-    .stock-low{
-        color:red;
-        font-weight:bold;
-    }
+/* INPUT */
+.qty-input{
+    width:80px;
+    padding:6px;
+    border-radius:8px;
+    border:1px solid #e5e7eb;
+    text-align:center;
+}
+
+/* ===== BOUTON MODIFIER (BLEU) ===== */
+.update-btn{
+    background: linear-gradient(135deg,#2563eb,#1e3a8a);
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.update-btn:hover{
+    transform:scale(1.05);
+}
+
+/* ===== BOUTON SUPPRIMER (ORANGE BOOSTÉ) ===== */
+.delete-btn{
+    background: var(--ems-orange);
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+    box-shadow:0 4px 12px rgba(255,106,0,0.25);
+}
+
+.delete-btn:hover{
+    background: var(--ems-orange-dark);
+    transform:scale(1.08);
+    box-shadow:0 6px 18px rgba(255,106,0,0.35);
+}
 
 </style>
 
-<h1 class="page-title">
-    Gestion du Stock
-</h1>
+<h2 class="stock-title">
+     Gestion du Stock EMS
+</h2>
 
-<!--  STATISTIQUES -->
-<div class="cards">
-
-    <div class="card-box">
-
-        <h3> Total Produits</h3>
-
-        <p style="font-size:30px; color:#1e3a8a;">
-            42
-        </p>
-
+@if(session('success'))
+    <div class="success">
+        {{ session('success') }}
     </div>
+@endif
 
-    <div class="card-box">
-
-        <h3> Produits Faibles</h3>
-
-        <p style="font-size:30px; color:red;">
-            5
-        </p>
-
-    </div>
-
-    <div class="card-box">
-
-        <h3> Ajouter Produit</h3>
-
-        <p>Créer un nouveau produit</p>
-
-        <a href="#" class="btn">
-            Ajouter
-        </a>
-
-    </div>
-
-</div>
-
-<!--  TABLE STOCK -->
-<table>
+<table class="stock-table">
 
     <thead>
-
         <tr>
-
             <th>ID</th>
-
             <th>Produit</th>
-
             <th>Catégorie</th>
-
             <th>Quantité</th>
-
+            <th>Agence</th>
             <th>État</th>
-
-            <th>Actions</th>
-
+            <th>Modifier</th>
+            <th>Supprimer</th>
         </tr>
-
     </thead>
 
     <tbody>
 
+        @foreach($produits as $produit)
+
         <tr>
 
-            <td>1</td>
-
-            <td>Ordinateur HP</td>
-
-            <td>Informatique</td>
-
-            <td>25</td>
-
-            <td class="stock-ok">
-                Disponible
-            </td>
+            <td>{{ $produit->id }}</td>
+            <td><strong>{{ $produit->nom }}</strong></td>
+            <td>{{ $produit->categorie }}</td>
+            <td>{{ $produit->quantite }}</td>
+            <td>{{ $produit->agence }}</td>
 
             <td>
+                @if($produit->quantite < 10)
+                    <span class="low-stock"> Stock Faible</span>
+                @else
+                    <span class="ok-stock"> Stock OK</span>
+                @endif
+            </td>
 
-                <a href="#" class="btn">
-                    Modifier
-                </a>
+            <!-- UPDATE -->
+            <td>
+                <form method="POST" action="/stocks/update/{{ $produit->id }}">
+                    @csrf
 
+                    <input type="number"
+                           name="quantite"
+                           value="{{ $produit->quantite }}"
+                           class="qty-input">
+
+                    <button type="submit" class="update-btn">
+                        Modifier
+                    </button>
+
+                </form>
+            </td>
+
+            <!-- DELETE -->
+            <td>
+                <form method="POST" action="/stocks/delete/{{ $produit->id }}">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit"
+                            onclick="return confirm('Supprimer ce produit ?')"
+                            class="delete-btn">
+                        Supprimer
+                    </button>
+
+                </form>
             </td>
 
         </tr>
 
-        <tr>
-
-            <td>2</td>
-
-            <td>Clavier Logitech</td>
-
-            <td>Accessoire</td>
-
-            <td>2</td>
-
-            <td class="stock-low">
-                Stock Faible
-            </td>
-
-            <td>
-
-                <a href="#" class="btn">
-                    Modifier
-                </a>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td>3</td>
-
-            <td>Souris Dell</td>
-
-            <td>Accessoire</td>
-
-            <td>15</td>
-
-            <td class="stock-ok">
-                Disponible
-            </td>
-
-            <td>
-
-                <a href="#" class="btn">
-                    Modifier
-                </a>
-
-            </td>
-
-        </tr>
+        @endforeach
 
     </tbody>
 

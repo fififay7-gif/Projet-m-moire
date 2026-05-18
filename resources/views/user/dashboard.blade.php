@@ -4,12 +4,13 @@
 
 <style>
     body {
-        background-color: #f0f4ff;
+        background-color: #f5f7fb;
     }
 
     .title {
         color: #1e3a8a;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+        font-weight: bold;
     }
 
     .cards {
@@ -21,33 +22,43 @@
     .card {
         background: white;
         padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-radius: 14px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         text-align: center;
-        transition: 0.3s;
+        transition: 0.3s ease;
+        border-top: 4px solid #1e3a8a;
     }
 
     .card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-6px);
     }
 
     .card h3 {
         color: #1e3a8a;
         margin-bottom: 10px;
+        font-weight: bold;
     }
 
     .card p {
-        color: #3b82f6;
+        color: #64748b;
     }
 
     .stats {
-        font-size: 30px;
+        font-size: 32px;
         font-weight: bold;
-        color: #1e3a8a;
+        color: #2563eb;
+    }
+
+    .alert-card {
+        border-top: 4px solid #f97316;
+    }
+
+    .alert-card .stats {
+        color: #f97316;
     }
 
     .section {
-        margin-top: 30px;
+        margin-top: 35px;
     }
 
     .section h2 {
@@ -55,68 +66,40 @@
         margin-bottom: 15px;
     }
 
-    .info-box {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
     .action-btn {
         display: inline-block;
-        margin-top: 10px;
+        margin-top: 12px;
         padding: 10px 15px;
-        background: #2563eb;
+        background: #f97316;
         color: white;
         border-radius: 8px;
         text-decoration: none;
-        transition: 0.3s;
+        font-weight: bold;
     }
 
     .action-btn:hover {
-        background: #1e3a8a;
+        background: #ea580c;
     }
 </style>
 
-<h1 class="title"> Dashboard Utilisateur</h1>
+<h1 class="title">Dashboard Utilisateur EMS</h1>
 
-<!--  PETITES STATS -->
+<!-- STATS -->
 <div class="cards">
 
     <div class="card">
         <p>Produits Disponibles</p>
-        <div class="stats">42</div>
+        <div class="stats">{{ $totalProduits }}</div>
     </div>
 
-    <div class="card">
+    <div class="card alert-card">
         <p>Alertes Stock</p>
-        <div class="stats">5</div>
+        <div class="stats">{{ $stocksFaibles }}</div>
     </div>
 
 </div>
 
-<!--  INFOS USER -->
-<div class="section">
-
-    <h2>Mes Informations</h2>
-
-    <div class="info-box">
-
-        <p><strong>Nom :</strong> {{ Auth::user()->name }}</p>
-
-        <p><strong>Email :</strong> {{ Auth::user()->email }}</p>
-
-        <p><strong>Rôle :</strong> {{ Auth::user()->role }}</p>
-
-        <p><strong>Date inscription :</strong>
-            {{ Auth::user()->created_at->format('d/m/Y') }}
-        </p>
-
-    </div>
-
-</div>
-
-<!--  ACTIONS -->
+<!-- ACTIONS -->
 <div class="section">
 
     <h2>Actions Disponibles</h2>
@@ -124,21 +107,15 @@
     <div class="cards">
 
         <div class="card">
-            <h3> Consulter Stock</h3>
+            <h3>Consulter Stock</h3>
             <p>Voir les produits disponibles</p>
-
-            <a href="#" class="action-btn">
-                Voir
-            </a>
+            <a href="/stocks" class="action-btn">Voir</a>
         </div>
 
-        <div class="card">
-            <h3> Alertes</h3>
+        <div class="card alert-card">
+            <h3>Alertes</h3>
             <p>Produits avec stock faible</p>
-
-            <a href="#" class="action-btn">
-                Consulter
-            </a>
+            <a href="/alertes" class="action-btn">Consulter</a>
         </div>
 
     </div>

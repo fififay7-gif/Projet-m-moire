@@ -3,72 +3,244 @@
 @section('content')
 
 <style>
-    .page-title{
-        color:#1e3a8a;
-        margin-bottom:20px;
-    }
 
-    .cards{
-        display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-        gap:20px;
-    }
+body{
+    background:#f5f7fb;
+}
 
-    .card-box{
-        background:white;
-        padding:20px;
-        border-radius:15px;
-        box-shadow:0 5px 15px rgba(0,0,0,0.08);
-    }
+/* TOP BAR */
+.top-bar {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
 
-    .btn{
-        display:inline-block;
-        margin-top:15px;
-        padding:10px 15px;
-        background:#2563eb;
-        color:white;
-        text-decoration:none;
-        border-radius:8px;
-    }
+.top-bar h2{
+    color:#1e3a8a;
+    font-weight:bold;
+}
 
-    .btn:hover{
-        background:#1e3a8a;
-    }
+/* BUTTON ADD (BLEU + ORANGE ACCENT) */
+.add-btn {
+    background: linear-gradient(135deg,#1e3a8a,#2563eb);
+    color:white;
+    padding:10px 15px;
+    border:none;
+    border-radius:12px;
+    font-weight:bold;
+    transition:0.3s;
+    box-shadow:0 8px 20px rgba(37,99,235,0.25);
+}
+
+.add-btn:hover{
+    transform:scale(1.05);
+    background: linear-gradient(135deg,#2563eb,#1e3a8a);
+}
+
+/* SUCCESS */
+.success {
+    background: #dcfce7;
+    padding: 12px;
+    margin-bottom: 15px;
+    color: #166534;
+    border-radius: 10px;
+    border-left: 5px solid #22c55e;
+}
+
+/* STATS CARD */
+.stats-card {
+    background: white;
+    padding: 18px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    border-left: 6px solid #2563eb;
+    position:relative;
+}
+
+/* petit accent orange */
+.stats-card::after{
+    content:"";
+    position:absolute;
+    top:0;
+    right:0;
+    width:80px;
+    height:6px;
+    background:#f97316;
+    border-top-right-radius:14px;
+}
+
+.stats-number {
+    font-size: 30px;
+    font-weight: bold;
+    color:#1e3a8a;
+}
+
+/* TABLE */
+.table-container {
+    background:white;
+    padding:15px;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+.table {
+    width:100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding:12px;
+    text-align:left;
+    border-bottom:1px solid #eee;
+}
+
+.table th {
+    background: linear-gradient(135deg,#1e3a8a,#2563eb);
+    color:white;
+}
+
+.table tr:hover{
+    background:#f0f4ff;
+}
+
+/* MODAL HEADER BLEU */
+.modal-header{
+    background: linear-gradient(135deg,#1e3a8a,#2563eb);
+    color:white;
+}
+
+/* BUTTON ORANGE ACTION */
+.btn-primary{
+    background:#f97316;
+    border:none;
+    font-weight:bold;
+    border-radius:10px;
+}
+
+.btn-primary:hover{
+    background:#ea580c;
+}
+
+/* INPUT STYLE */
+.form-control{
+    border-radius:10px;
+    padding:10px;
+    border:1px solid #e5e7eb;
+}
+
+.form-control:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+}
+
 </style>
 
-<h1 class="page-title"> Gestion des Produits</h1>
+<!-- TOP BAR -->
+<div class="top-bar">
 
-<div class="cards">
+    <h2> Gestion des Produits EMS</h2>
 
-    <div class="card-box">
+    <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addProduitModal">
+        + Ajouter Produit
+    </button>
 
-        <h3>Total Produits</h3>
+</div>
 
-        <p>42 produits enregistrés</p>
-
+<!-- SUCCESS -->
+@if(session('success'))
+    <div class="success">
+        {{ session('success') }}
     </div>
+@endif
 
-    <div class="card-box">
-
-        <h3>Ajouter Produit</h3>
-
-        <p>Créer un nouveau produit</p>
-
-        <a href="#" class="btn">
-            Ajouter
-        </a>
-
+<!-- STATS -->
+<div class="stats-card">
+    <p style="color:#64748b;">Nombre total de produits</p>
+    <div class="stats-number">
+        {{ $nombreProduits }}
     </div>
+</div>
 
-    <div class="card-box">
+<!-- TABLE -->
+<div class="table-container">
 
-        <h3>Consulter Stock</h3>
+    <table class="table">
 
-        <p>Voir tous les produits</p>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Produit</th>
+                <th>Catégorie</th>
+                <th>Quantité</th>
+                <th>Agence</th>
+            </tr>
+        </thead>
 
-        <a href="#" class="btn">
-            Voir
-        </a>
+        <tbody>
+
+            @foreach($produits as $produit)
+
+                <tr>
+                    <td>{{ $produit->id }}</td>
+                    <td><strong>{{ $produit->nom }}</strong></td>
+                    <td>{{ $produit->categorie }}</td>
+                    <td>{{ $produit->quantite }}</td>
+                    <td>{{ $produit->agence }}</td>
+                </tr>
+
+            @endforeach
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="addProduitModal" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title"> Ajouter Produit EMS</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="POST" action="/produits/store">
+                @csrf
+
+                <div class="modal-body">
+
+                    <input class="form-control mb-2" name="nom" placeholder="Nom produit">
+
+                    <select class="form-control mb-2" name="categorie">
+                        <option>Emballage</option>
+                        <option>Étiquetage</option>
+                        <option>Transport</option>
+                        <option>Informatique</option>
+                        <option>Sécurité</option>
+                        <option>Distribution</option>
+                    </select>
+
+                    <input class="form-control mb-2" type="number" name="quantite" placeholder="Quantité">
+
+                    <input class="form-control mb-2" name="agence" placeholder="Agence">
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        Ajouter
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 

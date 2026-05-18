@@ -3,130 +3,111 @@
 @section('content')
 
 <style>
-    body {
-        background-color: #f0f4ff;
-    }
 
-    .title {
-        color: #1e3a8a;
-        margin-bottom: 20px;
-    }
+body{
+    background:#f5f7fb;
+}
 
-    .cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-    }
+.title {
+    color:#1e3a8a;
+    margin-bottom:25px;
+    font-weight:bold;
+}
 
-    .card {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        text-align: center;
-        transition: 0.3s;
-    }
+.cards {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
 
-    .card:hover {
-        transform: translateY(-5px);
-    }
+.card {
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+    text-align:center;
+    transition:0.3s;
+    border-top:4px solid #2563eb;
+}
 
-    .card h3 {
-        color: #1e3a8a;
-        margin-bottom: 10px;
-    }
+.card:hover{
+    transform:translateY(-6px);
+}
 
-    .card p {
-        color: #3b82f6;
-    }
+.card h3{
+    color:#1e3a8a;
+    margin-bottom:10px;
+    font-weight:bold;
+}
 
-    .stats {
-        font-size: 30px;
-        font-weight: bold;
-        color: #1e3a8a;
-    }
+.card p{
+    color:#64748b;
+}
 
-    .section {
-        margin-top: 30px;
-    }
+.stats{
+    font-size:32px;
+    font-weight:bold;
+    color:#2563eb;
+}
 
-    .section h2 {
-        color: #1e3a8a;
-        margin-bottom: 15px;
-    }
+.alert{
+    color:#f97316;
+}
 
-    .info-box {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
+.section{
+    margin-top:35px;
+}
 
-    .action-btn {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 10px 15px;
-        background: #2563eb;
-        color: white;
-        border-radius: 8px;
-        text-decoration: none;
-        transition: 0.3s;
-    }
+.section h2{
+    color:#1e3a8a;
+    margin-bottom:15px;
+}
 
-    .action-btn:hover {
-        background: #1e3a8a;
-    }
+.action-btn {
+    display:inline-block;
+    margin-top:10px;
+    padding:10px 15px;
+    background:#f97316;
+    color:white;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.action-btn:hover{
+    background:#ea580c;
+}
+
 </style>
 
-<h1 class="title"> Dashboard Administrateur</h1>
+<h1 class="title">Dashboard Administrateur EMS</h1>
 
-<!--  STATISTIQUES -->
+<!-- STATS -->
 <div class="cards">
 
     <div class="card">
         <p>Total Produits</p>
-        <div class="stats">42</div>
+        <div class="stats">{{ $totalProduits }}</div>
     </div>
 
     <div class="card">
         <p>Stock Faible</p>
-        <div class="stats">5</div>
+        <div class="stats alert">{{ $stocksFaibles }}</div>
     </div>
 
     <div class="card">
         <p>Mouvements Aujourd’hui</p>
-        <div class="stats">12</div>
+        <div class="stats">{{ $mouvementsAujourdhui }}</div>
     </div>
 
     <div class="card">
         <p>Utilisateurs</p>
-        <div class="stats">3</div>
+        <div class="stats">{{ $totalUsers }}</div>
     </div>
 
 </div>
 
-<!--  INFORMATIONS -->
-<div class="section">
-
-    <h2>Informations Administrateur</h2>
-
-    <div class="info-box">
-
-        <p><strong>Nom :</strong> {{ Auth::user()->name }}</p>
-
-        <p><strong>Email :</strong> {{ Auth::user()->email }}</p>
-
-        <p><strong>Rôle :</strong> {{ Auth::user()->role }}</p>
-
-        <p><strong>Date inscription :</strong>
-            {{ Auth::user()->created_at->format('d/m/Y') }}
-        </p>
-
-    </div>
-
-</div>
-
-<!--  ACTIONS -->
+<!-- ACTIONS -->
 <div class="section">
 
     <h2>Actions Rapides</h2>
@@ -134,40 +115,27 @@
     <div class="cards">
 
         <div class="card">
-            <h3> Utilisateurs</h3>
-            <p>Gérer les utilisateurs</p>
-
-            <a href="/register" class="action-btn">
-                Ajouter
-            </a>
+            <h3>Utilisateurs</h3>
+            <p>Gérer les comptes utilisateurs</p>
+            <a href="/users" class="action-btn">Gérer</a>
         </div>
 
         <div class="card">
-            <h3> Produits</h3>
-            <p>Ajouter et modifier produits</p>
-
-            <a href="#" class="action-btn">
-                Accéder
-            </a>
+            <h3>Produits</h3>
+            <p>Ajouter et gérer les produits</p>
+            <a href="/produits" class="action-btn">Accéder</a>
         </div>
 
         <div class="card">
-            <h3> Mouvements</h3>
-            <p>Entrées / sorties stock</p>
-
-            <a href="#" class="action-btn">
-                Voir
-            </a>
+            <h3>Mouvements</h3>
+            <p>Entrées et sorties stock</p>
+            <a href="/mouvements" class="action-btn">Voir</a>
         </div>
-        <div class="cards">
 
         <div class="card">
-            <h3> Consulter Stock</h3>
-            <p>Voir les produits disponibles</p>
-
-            <a href="#" class="action-btn">
-                Voir
-            </a>
+            <h3>Stock</h3>
+            <p>Consulter les stocks disponibles</p>
+            <a href="/stocks" class="action-btn">Voir</a>
         </div>
 
     </div>

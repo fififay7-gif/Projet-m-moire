@@ -4,62 +4,109 @@
 
 <style>
 
-    .profile-container{
-        max-width:700px;
-        margin:auto;
-    }
+body{
+    background:#f5f7fb;
+}
 
-    .profile-card{
-        background:white;
-        padding:30px;
-        border-radius:20px;
-        box-shadow:0 5px 15px rgba(0,0,0,0.08);
-    }
+/* CONTAINER (même que password) */
+.profile-container{
+    max-width:550px;
+    margin:auto;
+    margin-top:30px;
+}
 
-    .profile-header{
-        text-align:center;
-        margin-bottom:30px;
-    }
+/* CARD (même style) */
+.profile-card{
+    background:white;
+    padding:35px;
+    border-radius:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    border-top:5px solid #ff6a00;
+}
 
-    .profile-avatar{
-        width:100px;
-        height:100px;
-        border-radius:50%;
-        background:#2563eb;
-        color:white;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:40px;
-        margin:auto;
-        margin-bottom:15px;
-    }
+/* AVATAR (même logique icône) */
+.avatar{
+    width:80px;
+    height:80px;
+    background:linear-gradient(135deg,#2563eb,#1e3a8a);
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+    margin-bottom:20px;
+    font-size:30px;
+    color:white;
+    font-weight:bold;
+    box-shadow:0 8px 20px rgba(37,99,235,0.25);
+}
 
-    .profile-header h2{
-        color:#1e3a8a;
-        margin-bottom:5px;
-    }
+/* TITLE */
+.profile-card h2{
+    text-align:center;
+    color:#1e3a8a;
+    margin-bottom:25px;
+    font-size:26px;
+}
 
-    .profile-header p{
-        color:gray;
-    }
+/* SUB TITLE */
+.subtitle{
+    text-align:center;
+    color:#64748b;
+    margin-bottom:25px;
+    font-size:14px;
+}
 
-    .info-group{
-        margin-bottom:20px;
-    }
+/* INFO BLOCK (style input-like pour homogénéité) */
+.info-box{
+    margin-bottom:18px;
+}
 
-    .info-label{
-        font-weight:bold;
-        color:#1e3a8a;
-        margin-bottom:8px;
-    }
+.label{
+    display:block;
+    margin-bottom:8px;
+    color:#1e3a8a;
+    font-weight:bold;
+}
 
-    .info-value{
-        background:#f0f4ff;
-        padding:12px;
-        border-radius:10px;
-        color:#333;
-    }
+.value{
+    width:100%;
+    padding:14px;
+    border:1px solid #dbeafe;
+    border-radius:12px;
+    background:#f8fbff;
+    font-size:14px;
+    color:#333;
+}
+
+/* BUTTON (même orange que password) */
+.btn{
+    width:100%;
+    background:linear-gradient(135deg,#ff6a00,#e65c00);
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+    transition:0.3s;
+    box-shadow:0 6px 18px rgba(255,106,0,0.25);
+    margin-top:10px;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(255,106,0,0.35);
+}
+
+/* ROLE BADGE */
+.role{
+    text-align:center;
+    margin-bottom:15px;
+    color:#ff6a00;
+    font-weight:bold;
+}
 
 </style>
 
@@ -67,76 +114,47 @@
 
     <div class="profile-card">
 
-        <!-- PHOTO -->
-        <div class="profile-header">
-
-            <div class="profile-avatar">
-
-                {{ strtoupper(substr($user->name,0,1)) }}
-
-            </div>
-
-            <h2>
-                {{ $user->name }}
-            </h2>
-
-            <p>
-                {{ $user->role }}
-            </p>
-
+        <!-- AVATAR -->
+        <div class="avatar">
+            {{ strtoupper(substr($user->name,0,1)) }}
         </div>
 
-        <!-- NOM -->
-        <div class="info-group">
+        <!-- TITLE -->
+        <h2>Mon Profil</h2>
 
-            <div class="info-label">
-                Nom complet
-            </div>
+        <p class="subtitle">
+            Informations personnelles du compte EMS
+        </p>
 
-            <div class="info-value">
-                {{ $user->name }}
-            </div>
+        <!-- ROLE -->
+        <div class="role">
+            {{ strtoupper($user->role) }}
+        </div>
 
+        <!-- NAME -->
+        <div class="info-box">
+            <div class="label">Nom complet</div>
+            <div class="value">{{ $user->name }}</div>
         </div>
 
         <!-- EMAIL -->
-        <div class="info-group">
-
-            <div class="info-label">
-                Adresse email
-            </div>
-
-            <div class="info-value">
-                {{ $user->email }}
-            </div>
-
-        </div>
-
-        <!-- ROLE -->
-        <div class="info-group">
-
-            <div class="info-label">
-                Rôle
-            </div>
-
-            <div class="info-value">
-                {{ $user->role }}
-            </div>
-
+        <div class="info-box">
+            <div class="label">Email</div>
+            <div class="value">{{ $user->email }}</div>
         </div>
 
         <!-- DATE -->
-        <div class="info-group">
-
-            <div class="info-label">
-                Date d'inscription
-            </div>
-
-            <div class="info-value">
+        <div class="info-box">
+            <div class="label">Date inscription</div>
+            <div class="value">
                 {{ $user->created_at->format('d/m/Y') }}
             </div>
-
         </div>
+
+        <!-- BUTTON -->
+        <a href="/modifier-mot-de-passe" class="btn">
+            Modifier mot de passe
+        </a>
 
     </div>
 

@@ -29,6 +29,11 @@ class AuthController extends Controller
             // Redirection vers dashboard
             return redirect()->route('dashboard');
         }
+ $user = Auth::user();
+
+        if ($user->must_change_password == 1) {
+    return redirect('/changer-mot-de-passe');
+}
 
         // Si erreur
         return back()->withErrors([
@@ -46,4 +51,5 @@ class AuthController extends Controller
 
         return redirect()->route('login');
     }
+
 }

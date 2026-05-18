@@ -4,154 +4,174 @@
 
 <style>
 
-    .page-title{
-        color:#1e3a8a;
-        margin-bottom:25px;
-    }
+body{
+    background:#f5f7fb;
+}
 
-    .cards{
-        display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-        gap:20px;
-    }
+/* TITLE */
+.page-title{
+    color:#1e3a8a;
+    margin-bottom:25px;
+    font-weight:bold;
+}
 
-    .card-box{
-        background:white;
-        padding:20px;
-        border-radius:15px;
-        box-shadow:0 5px 15px rgba(0,0,0,0.08);
-    }
+/* CARDS GRID */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
 
-    .card-box h3{
-        color:#1e3a8a;
-        margin-bottom:10px;
-    }
+/* CARD */
+.card-box{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+    border-top:4px solid #2563eb;
+    transition:0.3s;
+}
 
-    .btn{
-        display:inline-block;
-        margin-top:15px;
-        padding:10px 15px;
-        background:#2563eb;
-        color:white;
-        text-decoration:none;
-        border-radius:8px;
-        transition:0.3s;
-    }
+.card-box:hover{
+    transform:translateY(-5px);
+}
 
-    .btn:hover{
-        background:#1e3a8a;
-    }
+.card-box h3{
+    color:#1e3a8a;
+    margin-bottom:10px;
+    font-weight:bold;
+}
 
-    table{
-        width:100%;
-        border-collapse:collapse;
-        margin-top:30px;
-        background:white;
-        border-radius:15px;
-        overflow:hidden;
-        box-shadow:0 5px 15px rgba(0,0,0,0.08);
-    }
+.card-box p{
+    color:#64748b;
+}
 
-    table th{
-        background:#1e3a8a;
-        color:white;
-        padding:15px;
-    }
+/* BUTTON EMS */
+.btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 15px;
+    background: linear-gradient(135deg,#2563eb,#1e3a8a);
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:bold;
+    transition:0.3s;
+}
 
-    table td{
-        padding:15px;
-        border-bottom:1px solid #ddd;
-        text-align:center;
-    }
+.btn:hover{
+    transform:scale(1.05);
+}
 
-    .entree{
-        color:green;
-        font-weight:bold;
-    }
+/* TABLE CONTAINER */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:30px;
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
 
-    .sortie{
-        color:red;
-        font-weight:bold;
-    }
+/* HEADER */
+table th{
+    background: linear-gradient(135deg,#1e3a8a,#2563eb);
+    color:white;
+    padding:15px;
+    text-align:center;
+}
+
+/* ROWS */
+table td{
+    padding:15px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+
+/* HOVER ROW */
+table tr:hover{
+    background:#f0f4ff;
+}
+
+/* BADGES */
+.entree{
+    color:#16a34a;
+    font-weight:bold;
+    background:#dcfce7;
+    padding:5px 10px;
+    border-radius:8px;
+}
+
+.sortie{
+    color:#dc2626;
+    font-weight:bold;
+    background:#fee2e2;
+    padding:5px 10px;
+    border-radius:8px;
+}
 
 </style>
 
 <h1 class="page-title">
-     Gestion des Entrées / Sorties
+    Gestion des Entrées / Sorties EMS
 </h1>
 
-<!--  CARDS -->
+<!-- CARDS -->
 <div class="cards">
 
     <div class="card-box">
-
         <h3> Entrées Stock</h3>
-
         <p>Ajouter des produits au stock.</p>
-
-        <a href="#" class="btn">
-            Nouvelle Entrée
-        </a>
-
+        <a href="#" class="btn">Nouvelle Entrée</a>
     </div>
 
     <div class="card-box">
-
         <h3> Sorties Stock</h3>
-
         <p>Retirer des produits du stock.</p>
-
-        <a href="#" class="btn">
-            Nouvelle Sortie
-        </a>
-
+        <a href="#" class="btn">Nouvelle Sortie</a>
     </div>
 
     <div class="card-box">
-
         <h3> Total Mouvements</h3>
-
-        <p style="font-size:30px; color:#1e3a8a;">
+        <p style="font-size:30px; color:#2563eb; font-weight:bold;">
             12
         </p>
-
     </div>
 
 </div>
 
-<!--  TABLE -->
+<!-- TABLE -->
 <table>
 
     <thead>
-
         <tr>
             <th>Produit</th>
             <th>Type</th>
             <th>Quantité</th>
             <th>Date</th>
         </tr>
-
     </thead>
 
     <tbody>
 
         <tr>
             <td>Ordinateur HP</td>
-            <td class="entree">Entrée</td>
+            <td><span class="entree">Entrée</span></td>
             <td>10</td>
             <td>12/08/2025</td>
         </tr>
 
         <tr>
             <td>Clavier Logitech</td>
-            <td class="sortie">Sortie</td>
+            <td><span class="sortie">Sortie</span></td>
             <td>2</td>
             <td>12/08/2025</td>
         </tr>
 
         <tr>
             <td>Souris Dell</td>
-            <td class="entree">Entrée</td>
+            <td><span class="entree">Entrée</span></td>
             <td>5</td>
             <td>11/08/2025</td>
         </tr>

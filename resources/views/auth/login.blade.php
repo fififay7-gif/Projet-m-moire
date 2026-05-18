@@ -1,73 +1,153 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+<style>
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+body{
+    background: linear-gradient(135deg,#eef2ff,#f5f7fb);
+}
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+/* CENTER CARD */
+.login-wrapper{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:80vh;
+}
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+/* CARD */
+.login-card{
+    width:420px;
+    background:white;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+    overflow:hidden;
+    transition:0.3s;
+}
 
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+.login-card:hover{
+    transform:translateY(-5px);
+}
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+/* HEADER */
+.card-header{
+    background: linear-gradient(135deg,#1e3a8a,#2563eb);
+    color:white;
+    text-align:center;
+    padding:18px;
+    font-size:18px;
+    font-weight:bold;
+}
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+/* BODY */
+.card-body{
+    padding:25px;
+}
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+/* LABEL */
+label{
+    font-weight:600;
+    color:#1e3a8a;
+    font-size:14px;
+}
 
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+/* INPUTS */
+.form-control{
+    border-radius:10px;
+    padding:10px;
+    border:1px solid #e5e7eb;
+    transition:0.2s;
+}
 
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+.form-control:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+}
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+/* ALERT */
+.alert{
+    border-radius:10px;
+}
+
+/* BUTTON EMS */
+.btn-primary{
+    background: linear-gradient(135deg,#2563eb,#1e3a8a);
+    border:none;
+    padding:10px;
+    border-radius:10px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.btn-primary:hover{
+    background: linear-gradient(135deg,#1e3a8a,#2563eb);
+    transform:scale(1.03);
+}
+
+/* CHECKBOX */
+.form-check-label{
+    color:#64748b;
+}
+
+</style>
+
+<div class="login-wrapper">
+
+    <div class="login-card">
+
+        <div class="card-header">
+            🔐 EMS LOGIN
         </div>
+
+        <div class="card-body">
+
+            {{-- ERREURS --}}
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+
+                {{-- EMAIL --}}
+                <div class="mb-3">
+                    <label>Email Address</label>
+                    <input type="email"
+                           name="email"
+                           class="form-control"
+                           value="{{ old('email') }}"
+                           required>
+                </div>
+
+                {{-- PASSWORD --}}
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input type="password"
+                           name="password"
+                           class="form-control"
+                           required>
+                </div>
+
+                {{-- REMEMBER --}}
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" name="remember">
+                    <label class="form-check-label">Remember Me</label>
+                </div>
+
+                {{-- BUTTON --}}
+                <button type="submit" class="btn btn-primary w-100">
+                    Se connecter
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
+
 </div>
+
 @endsection

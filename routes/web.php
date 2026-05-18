@@ -88,8 +88,58 @@ Route::middleware('auth')->group(function () {
 
 use App\Http\Controllers\UserController;
 
-Route::get('/users', [UserController::class, 'index'])
+
+
+Route::get('/users', [UserController::class, 'index']);
+
+Route::post('/users/store', [UserController::class, 'store']);
+
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+    use App\Http\Controllers\ProfileController;
+
+Route::get('/profile', [ProfileController::class, 'index'])
     ->middleware('auth');
 
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])
+    use App\Http\Controllers\PasswordController;
+
+Route::get('/modifier-mot-de-passe', [PasswordController::class, 'edit'])
     ->middleware('auth');
+
+Route::post('/modifier-mot-de-passe', [PasswordController::class, 'updatePassword'])
+    ->middleware('auth');
+
+
+
+Route::get('/produits', [ProduitController::class, 'index']);
+Route::get('/produits/create', [ProduitController::class, 'create']);
+Route::post('/produits/store', [ProduitController::class, 'store']);
+
+
+
+
+Route::get('/stocks', [StockController::class, 'index']);
+Route::post('/stocks/update/{id}', [StockController::class, 'update']);
+Route::delete('/stocks/delete/{id}', [StockController::class, 'destroy']);
+
+
+
+
+
+
+Route::get('/change-password', function () {
+    return view('auth.change-password');
+})->middleware('auth');
+
+Route::post('/change-password', [PasswordController::class, 'update'])
+    ->middleware('auth');
+
+
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
