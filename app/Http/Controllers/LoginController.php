@@ -5,39 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required',
         ]);
 
-        if (Auth::attempt([
-            'email' => $request->email,
-            'password' => $request->password
-        ])) {
+        if (Auth::attempt($credentials)) {
 
             $request->session()->regenerate();
 
             $user = Auth::user();
 
-            //  FORCER CHANGEMENT DE MOT DE PASSE
-            if ($user->must_change_password) {
-                return redirect('/changer-mot-de-passe');
+            if ($user->role === 'chef_agence') {
+                return redirect('/chef/dashboard');
             }
 
-            //  REDIRECTION PAR RÔLE
-            if ($user->role === 'admin') {
-                return redirect('/admin/dashboard');
+            if ($user->role === 'comptable') {
+                return redirect('/comptable/dashboard');
             }
 
-            return redirect('/user/dashboard');
+            return redirect('/agent/dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'Email ou mot de passe incorrect'
-        ])->withInput();
+            'email' => 'Email ou mot de passe incorrect',
+        ]);
     }
 }

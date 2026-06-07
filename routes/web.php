@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProduitController;
 use Illuminate\Support\Facades\Route;
 
 // PAGE D'ACCUEIL
@@ -30,14 +29,7 @@ Route::middleware(['admin'])->group(function () {
 });
 
 
-#dashboard
-// Vérifiez que cette ligne existe bien :
-Route::get('/stock', [ProduitController::class, 'index'])->name('stock.index');
 
-
-use App\Http\Controllers\MouvementController;
-
-Route::resource('mouvements', MouvementController::class);
 
 
 
@@ -60,29 +52,15 @@ Route::post('/logout', function () {
 })->middleware('auth');
 
 
-use App\Http\Controllers\StockController;
-use App\Http\Controllers\AlerteController;
-use App\Http\Controllers\IAController;
+
+
+
 
 Route::middleware('auth')->group(function () {
 
     // DASHBOARD
     Route::get('/user/dashboard', [DashboardController::class, 'userDashboard']);
 
-    // PRODUITS
-    Route::get('/produits', [ProduitController::class, 'index']);
-
-    // STOCKS
-    Route::get('/stocks', [StockController::class, 'index']);
-
-    // MOUVEMENTS
-    Route::get('/mouvements', [MouvementController::class, 'index']);
-
-    // ALERTES
-    Route::get('/alertes', [AlerteController::class, 'index']);
-
-    // IA
-    Route::get('/fiche-ia', [IAController::class, 'index']);
 
 });
 
@@ -101,7 +79,8 @@ Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::get('/profile', [ProfileController::class, 'index'])
     ->middleware('auth');
 
-    use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\PasswordController;
+
 
 Route::get('/modifier-mot-de-passe', [PasswordController::class, 'edit'])
     ->middleware('auth');
@@ -111,35 +90,85 @@ Route::post('/modifier-mot-de-passe', [PasswordController::class, 'updatePasswor
 
 
 
-Route::get('/produits', [ProduitController::class, 'index']);
-Route::get('/produits/create', [ProduitController::class, 'create']);
-Route::post('/produits/store', [ProduitController::class, 'store']);
-
-
-
-
-Route::get('/stocks', [StockController::class, 'index']);
-Route::post('/stocks/update/{id}', [StockController::class, 'update']);
-Route::delete('/stocks/delete/{id}', [StockController::class, 'destroy']);
 
 
 
 
 
-
-Route::get('/change-password', function () {
-    return view('auth.change-password');
-})->middleware('auth');
-
-Route::post('/change-password', [PasswordController::class, 'update'])
-    ->middleware('auth');
+     use App\Http\Controllers\ChangePasswordController;
 
 
+Route::middleware('auth')->group(function () {
+
+    Route::get('/change-password', [ChangePasswordController::class, 'edit']);
+
+    Route::post('/change-password', [ChangePasswordController::class, 'updatePassword']);
+});
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+use App\Http\Controllers\ClientController;
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/clients', [ClientController::class, 'index']);
+    Route::get('/clients/create', [ClientController::class, 'create']);
+    Route::post('/clients/store', [ClientController::class, 'store']);
+    Route::delete('/clients/{id}', [ClientController::class, 'destroy']);
+
+});
+
+use App\Http\Controllers\ReservationController;
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/reservations', [ReservationController::class, 'index']);
+    Route::get('/reservations/create', [ReservationController::class, 'create']);
+    Route::post('/reservations/store', [ReservationController::class, 'store']);
+
+    Route::get('/reservations/{id}/{statut}', [ReservationController::class, 'updateStatus']);
+
+    Route::delete('/reservations/{id}', [ReservationController::class, 'destroy']);
+
+});
+
+
+
+use App\Http\Controllers\FactureController;
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/factures', [FactureController::class, 'index']);
+    Route::get('/factures/create', [FactureController::class, 'create']);
+    Route::post('/factures', [FactureController::class, 'store']);
+
+    Route::get('/factures/{id}', [FactureController::class, 'show']);
+    Route::delete('/factures/{id}', [FactureController::class, 'destroy']);
+
+    Route::get('/factures/{id}/payer', [FactureController::class, 'payer']);
+
+    Route::get('/factures/{id}/pdf', [FactureController::class, 'exportPdf']);
+});
+
+   use App\Http\Controllers\PaiementController;
+
+Route::get('/paiements', [PaiementController::class, 'index'])->name('paiements.index');
+
+//Route::get('/paiements/create', [PaiementController::class, 'create'])->name('paiements.create');
+
+Route::post('/paiements', [PaiementController::class, 'store'])->name('paiements.store');
+    Route::get('/comptable/dashboard', [DashboardController::class, 'comptableDashboard'])
+    ->middleware('auth');
+Route::post('/paiements/store',
+    [PaiementController::class,'store'])
+    ->name('paiements.store');
+
+    use App\Http\Controllers\BordereauController;
+
+    Route::resource('bordereaux', BordereauController::class);
+
+    use App\Http\Controllers\VersementController;
+Route::resource('versements', VersementController::class);

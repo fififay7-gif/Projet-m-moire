@@ -13,33 +13,35 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        // Validation
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
 
-        // Tentative de connexion
-        if (Auth::attempt($credentials)) {
+    if (!Auth::attempt($credentials)) {
 
-            // Régénérer session (sécurité)
-            $request->session()->regenerate();
-
-            // Redirection vers dashboard
-            return redirect()->route('dashboard');
-        }
- $user = Auth::user();
-
-        if ($user->must_change_password == 1) {
-    return redirect('/changer-mot-de-passe');
-}
-
-        // Si erreur
         return back()->withErrors([
             'email' => 'Email ou mot de passe incorrect'
         ])->withInput();
     }
+
+    $request->session()->regenerate();
+
+    $user = Auth::user();
+
+    // Première connexion
+    if ($user->must_change_password == 1) {
+        return redirect('/change-password');
+    }
+
+    // Redirection selon le rôle
+    if ($user->role === 'admin') {
+        return redirect('/admin/dashboard');
+    }
+
+    return redirect('/user/dashboard');
+}
 
     public function logout(Request $request)
     {

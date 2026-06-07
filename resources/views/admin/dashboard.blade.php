@@ -85,20 +85,6 @@ body{
 <!-- STATS -->
 <div class="cards">
 
-    <div class="card">
-        <p>Total Produits</p>
-        <div class="stats">{{ $totalProduits }}</div>
-    </div>
-
-    <div class="card">
-        <p>Stock Faible</p>
-        <div class="stats alert">{{ $stocksFaibles }}</div>
-    </div>
-
-    <div class="card">
-        <p>Mouvements Aujourd’hui</p>
-        <div class="stats">{{ $mouvementsAujourdhui }}</div>
-    </div>
 
     <div class="card">
         <p>Utilisateurs</p>
@@ -120,23 +106,7 @@ body{
             <a href="/users" class="action-btn">Gérer</a>
         </div>
 
-        <div class="card">
-            <h3>Produits</h3>
-            <p>Ajouter et gérer les produits</p>
-            <a href="/produits" class="action-btn">Accéder</a>
-        </div>
-
-        <div class="card">
-            <h3>Mouvements</h3>
-            <p>Entrées et sorties stock</p>
-            <a href="/mouvements" class="action-btn">Voir</a>
-        </div>
-
-        <div class="card">
-            <h3>Stock</h3>
-            <p>Consulter les stocks disponibles</p>
-            <a href="/stocks" class="action-btn">Voir</a>
-        </div>
+        
 
     </div>
 

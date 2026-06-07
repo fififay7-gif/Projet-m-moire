@@ -87,38 +87,14 @@
 <!-- STATS -->
 <div class="cards">
 
-    <div class="card">
-        <p>Produits Disponibles</p>
-        <div class="stats">{{ $totalProduits }}</div>
-    </div>
 
-    <div class="card alert-card">
-        <p>Alertes Stock</p>
-        <div class="stats">{{ $stocksFaibles }}</div>
-    </div>
 
 </div>
 
 <!-- ACTIONS -->
 <div class="section">
 
-    <h2>Actions Disponibles</h2>
 
-    <div class="cards">
-
-        <div class="card">
-            <h3>Consulter Stock</h3>
-            <p>Voir les produits disponibles</p>
-            <a href="/stocks" class="action-btn">Voir</a>
-        </div>
-
-        <div class="card alert-card">
-            <h3>Alertes</h3>
-            <p>Produits avec stock faible</p>
-            <a href="/alertes" class="action-btn">Consulter</a>
-        </div>
-
-    </div>
 
 </div>
 
