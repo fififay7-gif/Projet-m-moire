@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // --- LES TROIS DASHBOARDS EMS VOYAGE ---
+    Route::get('/admin/dashboard', [DashboardController::class, 'adminIndex'])->name('admin.dashboard');
     Route::get('/chef/dashboard', [DashboardController::class, 'chefIndex'])->name('chef.dashboard');
     Route::get('/comptable/dashboard', [DashboardController::class, 'comptableIndex'])->name('comptable.dashboard');
     Route::get('/comptoir/dashboard', [DashboardController::class, 'comptoirIndex'])->name('comptoir.dashboard');

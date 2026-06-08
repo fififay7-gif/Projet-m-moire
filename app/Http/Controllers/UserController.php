@@ -4,20 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     /**
      * Afficher les utilisateurs
      */
-    public function index()
+       public function index()
     {
+        // 2. ON UTILISE LA FAÇADE Auth:: EN DEUX-POINTS (Intelephense adore ça)
+        if (Auth::user()->role !== 'administrateur') {
+            return abort(403, 'Accès interdit : Réservé à l\'administrateur système.');
+        }
+
         $users = User::all();
-
         return view('users.index', compact('users'));
-    }
-
-    /**
+    }    /**
      * Ajouter un utilisateur
      */
     public function store(Request $request)

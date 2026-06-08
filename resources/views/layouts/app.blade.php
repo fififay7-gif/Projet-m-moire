@@ -209,14 +209,19 @@
 
     <a href="/dashboard"> Dashboard Accueil</a>
 
+    @if(Auth::user()->role === 'administrateur')
+        <div class="sidebar-heading" style="color: #ef4444;">Configuration</div>
+        <a href="/users">👥 Gérer les utilisateurs</a>
+    @endif
+
     @if(Auth::user()->role === 'chef_agence')
         <div class="sidebar-heading">Supervision</div>
-        <a href="/users"> Gérer le personnel</a>
         <a href="/clients"> Base Clients</a>
         <a href="/reservations"> Réservations globales</a>
         <a href="/factures"> Suivi des factures</a>
         <a href="/bordereaux"> Tous les Bordereaux</a>
         <a href="/versements"> Versements Banque</a>
+         <a href="/users"> utilisateurs</a>
     @endif
 
     @if(Auth::user()->role === 'comptable')
@@ -224,7 +229,7 @@
         <a href="/factures"> Factures à valider</a>
         <a href="/paiements"> Suivi des Paiements</a>
         <a href="/bordereaux"> Bordereaux d'envoi</a>
-        <a href="/versements"> Versements Banque</a>
+        <a href="/versements">Versements Banque</a>
     @endif
 
     @if(Auth::user()->role === 'agent_comptoir')
@@ -240,16 +245,21 @@
 <div class="header">
 
     <h3>EMS Voyage — Espace
-        @if(Auth::user()->role === 'chef_agence') Direction
-        @elseif(Auth::user()->role === 'comptable') Comptabilité
-        @elseif(Auth::user()->role === 'agent_comptoir') Saisie Comptoir
+        @if(Auth::user()->role === 'administrateur')
+            Administration Système
+        @elseif(Auth::user()->role === 'chef_agence')
+            Direction
+        @elseif(Auth::user()->role === 'comptable')
+            Comptabilité
+        @elseif(Auth::user()->role === 'agent_comptoir')
+            Saisie Comptoir
         @endif
     </h3>
 
     <div style="position:relative">
 
         <button class="profile-btn" onclick="toggleMenu()">
-             {{ Auth::user()->name }}
+              {{ Auth::user()->name }}
         </button>
 
         <div class="dropdown-content" id="profileDropdown">

@@ -16,6 +16,9 @@ class DashboardController extends Controller
         $role = Auth::user()->role;
 
         switch ($role) {
+            case 'administrateur':
+                return redirect()->route('admin.dashboard');
+
             case 'chef_agence':
                 return redirect()->route('chef.dashboard');
 
@@ -26,12 +29,18 @@ class DashboardController extends Controller
                 return redirect()->route('comptoir.dashboard');
 
             default:
-                // Sécurité si le rôle n'appartient pas à la liste EMS Voyage
                 Auth::logout();
                 return abort(403, 'Rôle non autorisé ou inconnu.');
         }
     }
 
+    /**
+     * Vue dédiée à l'Administrateur Système
+     */
+    public function adminIndex()
+    {
+        return view('dashboards.admin');
+    }
     /**
      * Vue dédiée au Chef d'agence
      */

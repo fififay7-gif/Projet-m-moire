@@ -163,6 +163,7 @@
         <label for="role">Poste occupé (Rôle)</label>
         <select name="role" id="role" required>
             <option value="">-- Choisir un rôle --</option>
+            <option value="administrateur" {{ old('role') == 'administrateur' ? 'selected' : '' }}>Administrateur Système</option>
             <option value="chef_agence" {{ old('role') == 'chef_agence' ? 'selected' : '' }}>Chef d'agence</option>
             <option value="agent_comptoir" {{ old('role') == 'agent_comptoir' ? 'selected' : '' }}>Agent de comptoir</option>
             <option value="comptable" {{ old('role') == 'comptable' ? 'selected' : '' }}>Comptable</option>
