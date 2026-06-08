@@ -2,123 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Models\Factures;
-use App\Models\Paiement;
+
 class DashboardController extends Controller
 {
     /**
-     * Redirection selon rôle
+     * Point d'entrée unique (/dashboard) qui redirige l'utilisateur
+     * vers le bon tableau de bord selon son rôle au sein d'EMS Voyage.
      */
     public function index()
-{
-    $user = Auth::user();
-
-    if (!$user) {
-        return redirect()->route('login');
-    }
-
-    if ($user->role === 'admin') {
-        return redirect('/admin/dashboard');
-    }
-
-    return redirect('/user/dashboard');
-}
-
-    /**
-     * DASHBOARD ADMIN
-     */
-    public function adminDashboard()
     {
-        $user = Auth::user();
+        $role = Auth::user()->role;
 
-        if ($user->role !== 'admin') {
-            abort(403);
+        switch ($role) {
+            case 'chef_agence':
+                return redirect()->route('chef.dashboard');
+
+            case 'comptable':
+                return redirect()->route('comptable.dashboard');
+
+            case 'agent_comptoir':
+                return redirect()->route('comptoir.dashboard');
+
+            default:
+                // Sécurité si le rôle n'appartient pas à la liste EMS Voyage
+                Auth::logout();
+                return abort(403, 'Rôle non autorisé ou inconnu.');
         }
-
-        $totalUsers = User::count();
-
-        return view('admin.dashboard', compact(
-            'user',
-            'totalUsers'
-        ));
     }
 
     /**
-     * DASHBOARD CHEF AGENCE
+     * Vue dédiée au Chef d'agence
      */
-    public function chefDashboard()
+    public function chefIndex()
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'chef_agence') {
-            abort(403);
-        }
-
-        return view('chef.dashboard', compact('user'));
+        // Vous pourrez injecter ici vos statistiques de ventes globales plus tard
+        return view('dashboards.chef');
     }
 
     /**
-     * DASHBOARD AGENT COMPTOIR
+     * Vue dédiée au Comptable
      */
-    public function agentDashboard()
+    public function comptableIndex()
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'agent_comptoir') {
-            abort(403);
-        }
-
-        return view('agent.dashboard', compact('user'));
+        // Vous pourrez injecter ici les données de la caisse ou des factures
+        return view('dashboards.comptable');
     }
 
     /**
-     * DASHBOARD COMPTABLE
+     * Vue dédiée à l'Agent de comptoir
      */
-   
-
-    /**
-     * DASHBOARD USER NORMAL
-     */
-    public function userDashboard()
+    public function comptoirIndex()
     {
-        $user = Auth::user();
-
-        if ($user->role !== 'user') {
-            abort(403);
-        }
-
-        return view('user.dashboard', compact('user'));
+        // Vous pourrez injecter ici les listes de réservations de billets du jour
+        return view('dashboards.comptoir');
     }
-
-    public function comptableDashboard()
-{
-    $user = Auth::user();
-
-    if ($user->role !== 'comptable') {
-        abort(403);
-    }
-
-    $totalFactures = Factures::count();
-
-    $totalEncaisse = Paiement::sum('montant_paye');
-
-    $totalFacturesMontant = Factures::sum('montant');
-
-    $resteAPayer = $totalFacturesMontant - $totalEncaisse;
-
-    $facturesImpayees = Factures::where('statut', 'impayée')->count();
-
-    $facturesPartielles = Factures::where('statut', 'partielle')->count();
-
-    return view('comptable.dashboard', compact(
-        'user',
-        'totalFactures',
-        'totalEncaisse',
-        'resteAPayer',
-        'facturesImpayees',
-        'facturesPartielles'
-    ));
-}
 }

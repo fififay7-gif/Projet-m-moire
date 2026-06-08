@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un utilisateur EMS</title>
+    <title>Créer un utilisateur EMS Voyage</title>
 
     <style>
-
         *{
             margin:0;
             padding:0;
@@ -34,14 +33,28 @@
         h2{
             text-align:center;
             color:#1e3a8a;
-            margin-bottom:25px;
+            margin-bottom:5px;
             font-weight:bold;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b5563;
+            margin-left: 2px;
         }
 
         input, select{
             width:100%;
             padding:12px;
-            margin-top:8px;
+            margin-top:6px;
             margin-bottom:15px;
             border:1px solid #e5e7eb;
             border-radius:10px;
@@ -63,13 +76,15 @@
             border-radius:10px;
             margin-bottom:15px;
             border-left:4px solid #22c55e;
+            font-size: 14px;
         }
 
         .error{
             color:#dc2626;
             font-size:13px;
-            margin-top:-10px;
-            margin-bottom:10px;
+            margin-top:-12px;
+            margin-bottom:12px;
+            padding-left: 2px;
         }
 
         .buttons{
@@ -87,6 +102,12 @@
             border-radius:10px;
             cursor:pointer;
             font-weight:bold;
+            transition: 0.2s;
+        }
+
+        .create-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
         }
 
         .cancel-btn{
@@ -101,8 +122,13 @@
             display:flex;
             justify-content:center;
             align-items:center;
+            transition: 0.2s;
         }
 
+        .cancel-btn:hover {
+            background: #ea580c;
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 
@@ -110,60 +136,57 @@
 
 <div class="register-container">
 
-    <h2>Créer un utilisateur EMS</h2>
+    <h2>EMS Voyage</h2>
+    <div class="subtitle">Espace d'ajout de personnel</div>
 
     @if(session('success'))
         <div class="success">
-            {{ session('success') }}
+            ✅ {{ session('success') }}
         </div>
     @endif
 
-    <form method="POST" action="/register">
+    <form method="POST" action="/users/store">
         @csrf
 
-        <!-- NOM -->
-        <input type="text" name="name" placeholder="Nom complet" value="{{ old('name') }}">
+        <label for="name">Nom complet de l'agent</label>
+        <input type="text" id="name" name="name" placeholder="Ex: Pape Diop" value="{{ old('name') }}" required>
         @error('name')
             <div class="error">{{ $message }}</div>
         @enderror
 
-        <!-- EMAIL -->
-        <input type="email" name="email" placeholder="Adresse email" value="{{ old('email') }}">
+        <label for="email">Adresse email</label>
+        <input type="email" id="email" name="email" placeholder="Ex: p.diop@ems.sn" value="{{ old('email') }}" required>
         @error('email')
             <div class="error">{{ $message }}</div>
         @enderror
 
-        <!-- PASSWORD -->
-        <input type="password" name="password" placeholder="Mot de passe">
-        @error('password')
-            <div class="error">{{ $message }}</div>
-        @enderror
-
-        <!-- CONFIRM PASSWORD -->
-        <input type="password" name="password_confirmation" placeholder="Confirmer mot de passe">
-
-        <!-- ROLE (CORRIGÉ) -->
-        <select name="role" required>
-            <option value="agent_de_comptoir">Agent de comptoir</option>
-            <option value="chef_agence">Chef d’agence</option>
-            <option value="comptable">Comptable</option>
+        <label for="role">Poste occupé (Rôle)</label>
+        <select name="role" id="role" required>
+            <option value="">-- Choisir un rôle --</option>
+            <option value="chef_agence" {{ old('role') == 'chef_agence' ? 'selected' : '' }}>Chef d'agence</option>
+            <option value="agent_comptoir" {{ old('role') == 'agent_comptoir' ? 'selected' : '' }}>Agent de comptoir</option>
+            <option value="comptable" {{ old('role') == 'comptable' ? 'selected' : '' }}>Comptable</option>
         </select>
-
         @error('role')
             <div class="error">{{ $message }}</div>
         @enderror
 
-        <!-- BUTTONS -->
+        <label for="password">Mot de passe initial</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
+        @error('password')
+            <div class="error">{{ $message }}</div>
+        @enderror
+
+        <label for="password_confirmation">Confirmer le mot de passe</label>
+        <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required>
+
         <div class="buttons">
-
             <button type="submit" class="create-btn">
-                Créer utilisateur
+                Créer l'agent
             </button>
-
             <a href="/users" class="cancel-btn">
                 Annuler
             </a>
-
         </div>
 
     </form>
@@ -171,5 +194,4 @@
 </div>
 
 </body>
-
 </html>

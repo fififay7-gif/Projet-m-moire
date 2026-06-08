@@ -6,35 +6,44 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
 
-            // identité
+            // Informations d'identité
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
 
-            // sécurité
+            // Sécurité & Authentification
             $table->string('password');
 
-            // rôle utilisateur (gestion des acteurs du système)
+            /**
+             * Rôles utilisateurs pour EMS Voyage
+             * Aligné avec le formulaire d'ajout (sans le '_de_') pour éviter l'erreur 1265 Data truncated
+             */
             $table->enum('role', [
-                'agent_de_comptoir',
-                'comptable',
-                'chef_agence'
-            ])->default('agent_de_comptoir');
+                'chef_agence',
+                'agent_comptoir',
+                'comptable'
+            ])->default('agent_comptoir');
 
-            // option sécurité (forcer changement mot de passe à la 1ère connexion)
+            // Option de sécurité : Forcer le changement de mot de passe à la première connexion
             $table->boolean('must_change_password')->default(true);
 
-            // Laravel auth
+            // Jetons de session et Horodatages Laravel
             $table->rememberToken();
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('users');

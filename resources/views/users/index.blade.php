@@ -69,22 +69,37 @@ table td{
     border-bottom:1px solid #eee;
 }
 
-/* ROLE */
+/* ROLES - EMS VOYAGE STYLE */
 .role{
-    padding:5px 10px;
+    padding:5px 12px;
     border-radius:20px;
     font-size:12px;
     font-weight:bold;
+    display: inline-block;
 }
 
-.role.admin{
+/* Style pour Chef d'agence */
+.role.chef_agence{
+    background:#e0ecff;
+    color:#1e3a8a;
+}
+
+/* Style pour Comptable */
+.role.comptable{
+    background:#e6f4ea;
+    color:#137333;
+}
+
+/* Style pour Agent de comptoir */
+.role.agent_comptoir{
     background:#fff1e6;
     color:#f97316;
 }
 
-.role.user{
-    background:#e0ecff;
-    color:#1e3a8a;
+/* Au cas où l'ancien administrateur traîne encore */
+.role.administrateur{
+    background:#f3e8ff;
+    color:#6b21a8;
 }
 
 /* MODAL HEADER */
@@ -102,12 +117,10 @@ table td{
 
 <h1 class="page-title">Gestion des utilisateurs</h1>
 
-<!-- BUTTON ADD -->
 <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addUserModal">
-    + Ajouter utilisateur
+    Ajouter utilisateur
 </button>
 
-<!-- TABLE -->
 <table>
 
     <thead>
@@ -132,7 +145,11 @@ table td{
 
             <td>
                 <span class="role {{ $user->role }}">
-                    {{ $user->role }}
+                    @if($user->role == 'chef_agence') Chef d'agence
+                    @elseif($user->role == 'comptable') Comptable
+                    @elseif($user->role == 'agent_comptoir') Agent de comptoir
+                    @else {{ $user->role }}
+                    @endif
                 </span>
             </td>
 
@@ -159,7 +176,6 @@ table td{
 
 </table>
 
-<!-- MODAL AJOUT UTILISATEUR -->
 <div class="modal fade" id="addUserModal" tabindex="-1">
 
     <div class="modal-dialog">
@@ -177,20 +193,22 @@ table td{
 
                 <div class="modal-body">
 
-                    <input class="form-control mb-2" name="name" placeholder="Nom">
-                    <input class="form-control mb-2" name="email" placeholder="Email">
-                    <input class="form-control mb-2" type="password" name="password" placeholder="Mot de passe">
+                    <input class="form-control mb-2" name="name" placeholder="Nom" required>
+                    <input class="form-control mb-2" type="email" name="email" placeholder="Email" required>
+                    <input class="form-control mb-2" type="password" name="password" placeholder="Mot de passe" required>
 
-                    <select class="form-control mb-2" name="role">
-                        <option value="admin">Admin</option>
-                        <option value="user">Utilisateur</option>
+                    <select class="form-control mb-2" name="role" required>
+                        <option value="">-- Sélectionner un poste --</option>
+                        <option value="chef_agence">Chef d'agence</option>
+                        <option value="agent_comptoir">Agent de comptoir</option>
+                        <option value="comptable">Comptable</option>
                     </select>
 
                 </div>
 
                 <div class="modal-footer">
 
-                    <button type="submit" class="btn-add">
+                    <button type="submit" class="btn-add" style="margin-bottom: 0;">
                         Ajouter
                     </button>
 
