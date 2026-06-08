@@ -11,16 +11,16 @@ class UserController extends Controller
     /**
      * Afficher les utilisateurs
      */
-       public function index()
+     public function index()
     {
-        // 2. ON UTILISE LA FAÇADE Auth:: EN DEUX-POINTS (Intelephense adore ça)
-        if (Auth::user()->role !== 'administrateur') {
+        // Utilisation propre de la Facade Auth (Pense à vérifier que "use Illuminate\Support\Facades\Auth;" est bien en haut du fichier)
+        if (\Illuminate\Support\Facades\Auth::user()->role !== 'administrateur') {
             return abort(403, 'Accès interdit : Réservé à l\'administrateur système.');
         }
 
         $users = User::all();
         return view('users.index', compact('users'));
-    }    /**
+    } /**
      * Ajouter un utilisateur
      */
     public function store(Request $request)

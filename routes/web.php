@@ -108,3 +108,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('versements', VersementController::class);
 
 });
+// Route de secours pour attraper la mauvaise redirection de Laravel
+Route::redirect('/user/dashboard', '/dashboard');

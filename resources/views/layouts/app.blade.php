@@ -211,7 +211,7 @@
 
     @if(Auth::user()->role === 'administrateur')
         <div class="sidebar-heading" style="color: #ef4444;">Configuration</div>
-        <a href="/users">👥 Gérer les utilisateurs</a>
+        <a href="/users">Gérer les utilisateurs</a>
     @endif
 
     @if(Auth::user()->role === 'chef_agence')
