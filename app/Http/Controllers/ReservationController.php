@@ -20,23 +20,26 @@ class ReservationController extends Controller
         return view('reservations.create', compact('clients'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'client_id' => 'required|exists:clients,id',
-            'type_service' => 'required|string',
-            'date_reservation' => 'required|date',
-        ]);
+  public function store(Request $request)
+{
+    // 1. On valide uniquement les autres champs reçus (comme le client, etc.)
+    $request->validate([
+        'client_id' => 'required|exists:clients,id',
+        // Plus besoin de valider 'date_reservation' puisqu'elle n'est plus dans le formulaire
+    ]);
 
-       Reservation::create([
-    'client_id' => $request->client_id,
-    'type_voyage' => $request->type_voyage,
-    'date_reservation' => now(), // automatique 👍
-    'date_voyage' => $request->date_voyage,
-]);
+    // 2. On crée la réservation en y ajoutant manuellement la date actuelle
+    Reservation::create([
+        'client_id' => $request->client_id,
+        'date_reservation' => now(), // Génère automatiquement la date et l'heure courante (YYYY-MM-DD HH:MM:SS)
+        // Ajoute ici tes autres champs si tu en as (ex: 'statut' => 'confirmé')
+    ]);
 
-        return redirect()->back()->with('success', 'Réservation ajoutée avec succès');
-    }
+    // 3. Redirection vers la liste avec un message de succès
+    return redirect()->route('reservations.index')->with('success', 'Réservation enregistrée automatiquement !');
+}
+
+    
 
     public function updateStatus($id, $statut)
     {

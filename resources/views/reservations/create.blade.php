@@ -67,17 +67,10 @@
                 </select>
             </div>
 
-            <!-- DATE -->
-            <div class="mb-3">
-                <label style="font-weight:600; color:#1e3a8a;">
-                    Date de réservation
-                </label>
 
-                <input type="date"
-                       name="date_reservation"
-                       class="form-control"
-                       style="border-radius: 10px; border: 1px solid #d1d5db;">
-            </div>
+
+
+                
 
             <!-- BUTTON -->
             <button class="btn w-100 fw-bold"

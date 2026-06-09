@@ -9,10 +9,7 @@
              Tableau de Bord - Chef d'Agence
         </h1>
 
-        <span class="badge px-3 py-2 fs-6"
-              style="background: #f97316; color: white; border-radius: 12px;">
-            EMS Voyage : Supervision
-        </span>
+       
     </div>
 
     <!-- STATS CARDS -->

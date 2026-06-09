@@ -125,7 +125,7 @@
     </div>
 
     <h2>Connexion</h2>
-    <div class="subtitle">Gestion de Stock EMS Sénégal</div>
+    <div class="subtitle">Gestion des clients EMS Sénégal</div>
 
     @if($errors->any())
         <p class="error">{{ $errors->first() }}</p>
