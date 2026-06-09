@@ -8,6 +8,7 @@ use App\Models\Factures;
 use App\Models\Paiement;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Reservation;
 
 class FactureController extends Controller
 {
@@ -22,12 +23,13 @@ class FactureController extends Controller
     }
 
     // FORM CREATE
-    public function create()
-    {
-        $clients = Client::all();
-        return view('factures.create', compact('clients'));
-    }
+   public function create()
+{
+    $clients = Client::all();
+    $reservations = Reservation::all();
 
+    return view('factures.create', compact('clients', 'reservations'));
+}
     // STORE FACTURE
     public function store(Request $request)
     {

@@ -6,15 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paiement extends Model
 {
-    protected $fillable = [
-        'facture_id',
-        'montant_paye',
-        'date_paiement',
-        'mode_paiement'
-    ];
-
-   public function client()
-{
-    return $this->belongsTo(Client::class);
-}
+    // On autorise Laravel à insérer le client et le montant
+   protected $fillable = ['client_id', 'montant', 'date_paiement'];
+    // Cette relation permet d'afficher le nom du client dans ton tableau HTML
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

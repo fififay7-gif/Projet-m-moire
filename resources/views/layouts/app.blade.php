@@ -194,6 +194,29 @@
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .dropdown-divider{
+    height:1px;
+    background:#e5e7eb;
+    margin:5px 0;
+}
+
+.logout-btn{
+    width:100%;
+    border:none;
+    background:#ef4444;
+    color:white;
+    padding:14px 18px;
+    text-align:left;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.logout-btn:hover{
+    background:#dc2626;
+    padding-left:25px;
+}
     </style>
 </head>
 
@@ -204,18 +227,18 @@
     <div class="logo-box">
         <img src="{{ asset('images/ems-logo.png') }}" alt="Logo EMS">
         <h2>EMS Voyage</h2>
-        <p>Aiguillage Intelligent</p>
+
     </div>
 
     <a href="/dashboard"> Dashboard Accueil</a>
 
     @if(Auth::user()->role === 'administrateur')
-        <div class="sidebar-heading" style="color: #ef4444;">Configuration</div>
+        <div class="sidebar-heading" style="color: #ef4444;"></div>
         <a href="/users">Gérer les utilisateurs</a>
     @endif
 
     @if(Auth::user()->role === 'chef_agence')
-        <div class="sidebar-heading">Supervision</div>
+        <div class="sidebar-heading"></div>
         <a href="/clients"> Base Clients</a>
         <a href="/reservations"> Réservations globales</a>
         <a href="/factures"> Suivi des factures</a>
@@ -262,16 +285,30 @@
               {{ Auth::user()->name }}
         </button>
 
-        <div class="dropdown-content" id="profileDropdown">
-            <a href="/profile">Mon profil</a>
-            <a href="/change-password">Changer mot de passe</a>
-            <hr style="margin:0">
+       <div class="dropdown-content" id="profileDropdown">
 
-            <form method="POST" action="/logout">
-                @csrf
-                <button type="submit"> Déconnexion</button>
-            </form>
-        </div>
+    <a href="/profile">
+         Mon profil
+    </a>
+
+    <a href="/change-password">
+         Changer mot de passe
+    </a>
+
+    <div class="dropdown-divider"></div>
+
+    <form method="POST" action="/logout">
+        @csrf
+
+        <button
+            type="submit"
+            class="logout-btn"
+            onclick="return confirm('Voulez-vous vraiment vous déconnecter ?')">
+             Déconnexion
+        </button>
+    </form>
+
+</div>
 
     </div>
 

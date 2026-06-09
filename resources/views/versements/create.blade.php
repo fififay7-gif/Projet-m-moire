@@ -2,53 +2,105 @@
 
 @section('content')
 
-<div class="card">
+<div class="container mt-4">
 
-<h2>Nouveau Versement</h2>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-<form action="{{ route('versements.store') }}"
-      method="POST">
+        <h3 style="color:#1e3a8a; font-weight:800;">
+             Nouveau Versement
+        </h3>
 
-@csrf
+        <span class="badge px-3 py-2 fs-6"
+              style="background:#f97316; color:white; border-radius:12px;">
+            EMS Voyage : Banque
+        </span>
 
-<select name="bordereau_id">
+    </div>
 
-@foreach($bordereaux as $b)
+    <!-- CARD -->
+    <div class="card shadow-sm border-0 p-4"
+         style="border-radius:16px; background:#ffffff;">
 
-<option value="{{ $b->id }}">
-    {{ $b->numero_bordereau }}
-</option>
+        <form action="{{ route('versements.store') }}" method="POST">
+            @csrf
 
-@endforeach
+            <!-- BORDEREAU -->
+            <div class="mb-3">
+                <label style="font-weight:600; color:#1e3a8a;">
+                     Bordereau
+                </label>
 
-</select>
+                <select name="bordereau_id"
+                        class="form-control"
+                        style="border-radius:10px; border:1px solid #d1d5db;"
+                        required>
 
-<br><br>
+                    <option value="">-- Choisir un bordereau --</option>
 
-<input type="number"
-       name="montant"
-       placeholder="Montant">
+                    @foreach($bordereaux as $b)
+                        <option value="{{ $b->id }}">
+                            {{ $b->numero_bordereau }}
+                        </option>
+                    @endforeach
 
-<br><br>
+                </select>
+            </div>
 
-<input type="text"
-       name="banque"
-       placeholder="Banque">
+            <!-- MONTANT -->
+            <div class="mb-3">
+                <label style="font-weight:600; color:#1e3a8a;">
+                     Montant (FCFA)
+                </label>
 
-<br><br>
+                <input type="number"
+                       name="montant"
+                       class="form-control"
+                       placeholder="Ex: 150000"
+                       style="border-radius:10px; border:1px solid #d1d5db;"
+                       required>
+            </div>
 
-<input type="date"
-       name="date_versement">
+            <!-- BANQUE -->
+            <div class="mb-3">
+                <label style="font-weight:600; color:#1e3a8a;">
+                     Banque
+                </label>
 
-<br><br>
+                <input type="text"
+                       name="banque"
+                       class="form-control"
+                       placeholder="Ex: CBAO, Ecobank..."
+                       style="border-radius:10px; border:1px solid #d1d5db;"
+                       required>
+            </div>
 
-<button type="submit">
+            <!-- DATE -->
+            <div class="mb-3">
+                <label style="font-weight:600; color:#1e3a8a;">
+                     Date de versement
+                </label>
 
-Enregistrer
+                <input type="date"
+                       name="date_versement"
+                       class="form-control"
+                       style="border-radius:10px; border:1px solid #d1d5db;"
+                       required>
+            </div>
 
-</button>
+            <!-- BUTTON -->
+            <button type="submit"
+                    class="btn w-100 fw-bold"
+                    style="background:linear-gradient(135deg,#1e3a8a,#2563eb);
+                           color:white;
+                           padding:12px;
+                           border-radius:12px;">
+                 Ajouter le versement
+            </button>
 
-</form>
+        </form>
+
+    </div>
 
 </div>
 

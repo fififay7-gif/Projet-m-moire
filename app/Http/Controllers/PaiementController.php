@@ -15,17 +15,18 @@ public function index()
 
     return view('paiements.index', compact('paiements', 'clients'));
 }
-
 public function store(Request $request)
 {
     $request->validate([
-        'client_id' => 'required|exists:clients,id',
+        'client_id' => 'required',
         'montant' => 'required|numeric|min:1',
     ]);
 
+    // On ajoute 'date_paiement' avec la date et l'heure du jour (now())
     Paiement::create([
         'client_id' => $request->client_id,
         'montant' => $request->montant,
+        'date_paiement' => now(),
     ]);
 
     return back()->with('success', 'Paiement enregistré avec succès');

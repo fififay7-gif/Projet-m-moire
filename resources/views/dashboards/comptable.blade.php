@@ -2,36 +2,76 @@
 
 @section('content')
 <div class="container mt-4">
+
+    <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 style="color: #166534; font-weight: bold;">Espace Comptabilité</h1>
-        <span class="badge bg-success fs-6">EMS Voyage : Finances</span>
+        <h1 style="color: #1e3a8a; font-weight: 800;">
+             Espace Comptabilité
+        </h1>
+
+        <span class="badge px-3 py-2 fs-6"
+              style="background: #f97316; color: white; border-radius: 12px;">
+            EMS Voyage : Finances
+        </span>
     </div>
 
+    <!-- STATS -->
     <div class="row g-3 mb-4">
+
         <div class="col-md-6">
-            <div class="card shadow-sm border-0 bg-white p-3" style="border-left: 5px solid #10b981 !important;">
-                <h6 class="text-muted text-uppercase small font-weight-bold">Recettes à valider</h6>
-                <h3 class="text-success font-weight-bold mt-2">En attente</h3>
+            <div class="card shadow-sm border-0 p-3"
+                 style="border-left: 6px solid #10b981; border-radius: 14px;">
+                <h6 style="color:#6b7280; text-transform: uppercase; font-size: 12px;">
+                    Recettes à valider
+                </h6>
+                <h3 style="color:#166534; font-weight:800; margin-top:8px;">
+                    En attente
+                </h3>
             </div>
         </div>
+
         <div class="col-md-6">
-            <div class="card shadow-sm border-0 bg-white p-3" style="border-left: 5px solid #ef4444 !important;">
-                <h6 class="text-muted text-uppercase small font-weight-bold">Dépenses de l'Agence</h6>
-                <h3 class="text-dark font-weight-bold mt-2">0 FCFA</h3>
+            <div class="card shadow-sm border-0 p-3"
+                 style="border-left: 6px solid #ef4444; border-radius: 14px;">
+                <h6 style="color:#6b7280; text-transform: uppercase; font-size: 12px;">
+                    Dépenses de l'Agence
+                </h6>
+                <h3 style="color:#111827; font-weight:800; margin-top:8px;">
+                    0 FCFA
+                </h3>
             </div>
         </div>
+
     </div>
 
-    <div class="card shadow-sm border-0 p-4 bg-white">
-        <h4 class="mb-3" style="color: #166534;"> Opérations Financières</h4>
+    <!-- ACTIONS -->
+    <div class="card shadow-sm border-0 p-4"
+         style="border-radius: 16px; background: #ffffff;">
+
+        <h4 class="mb-3" style="color: #1e3a8a; font-weight: 700;">
+            Opérations Financières
+        </h4>
+
         <div class="d-flex gap-2 flex-wrap">
-            <button class="btn btn-outline-success px-4 py-2 fw-bold" style="border-radius: 10px;">
+
+            <button class="btn px-4 py-2 fw-bold"
+                    style="background: linear-gradient(135deg, #10b981, #059669);
+                           color: white;
+                           border-radius: 12px;">
                  Journal des caisses
             </button>
-            <button class="btn btn-outline-secondary px-4 py-2 fw-bold" style="border-radius: 10px;">
-                Générer bilans financiers
+
+            <button class="btn px-4 py-2 fw-bold"
+                    style="border: 2px solid #1e3a8a;
+                           color: #1e3a8a;
+                           background: white;
+                           border-radius: 12px;">
+                 Générer bilans financiers
             </button>
+
         </div>
+
     </div>
+
 </div>
 @endsection

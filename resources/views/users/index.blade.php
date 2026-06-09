@@ -125,7 +125,7 @@ table td{
 
     <thead>
         <tr>
-            <th>ID</th>
+
             <th>Nom</th>
             <th>Email</th>
             <th>Rôle</th>
@@ -139,7 +139,7 @@ table td{
 
         <tr>
 
-            <td>{{ $user->id }}</td>
+
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
 
@@ -163,6 +163,8 @@ table td{
                             onclick="return confirm('Supprimer cet utilisateur ?')">
                         Supprimer
                     </button>
+
+
 
                 </form>
 

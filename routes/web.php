@@ -104,9 +104,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/paiements', [PaiementController::class, 'store'])->name('paiements.store');
     Route::post('/paiements/store', [PaiementController::class, 'store']); // Fallback de sécurité
 
-    Route::resource('bordereaux', BordereauController::class);
-    Route::resource('versements', VersementController::class);
 
 });
 // Route de secours pour attraper la mauvaise redirection de Laravel
 Route::redirect('/user/dashboard', '/dashboard');
+
+
+// Routes pour les Bordereaux
+Route::get('/bordereaux', [BordereauController::class, 'index'])->name('bordereaux.index');
+Route::post('/bordereaux/store', [BordereauController::class, 'store'])->name('bordereaux.store');
+
+// Routes pour les Versements
+Route::get('/versements', [VersementController::class, 'index'])->name('versements.index');
+Route::post('/versements/store', [VersementController::class, 'store'])->name('versements.store');

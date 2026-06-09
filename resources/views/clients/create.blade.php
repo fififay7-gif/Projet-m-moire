@@ -4,53 +4,113 @@
 
 <div class="container">
 
-    <div class="card shadow p-4">
+    <div class="card shadow border-0">
 
-        <h3 class="mb-4">➕ Ajouter un client</h3>
+        <div class="card-header text-white"
+             style="background:linear-gradient(135deg,#0f2a6b,#2563eb);">
 
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+            <h3 class="mb-0">
+                 Ajouter un Client
+            </h3>
 
-        <form method="POST" action="/clients/store">
-            @csrf
+        </div>
 
-            <div class="mb-3">
-                <label>Nom</label>
-                <input type="text" name="nom" class="form-control" required>
-            </div>
+        <div class="card-body p-4">
 
-            <div class="mb-3">
-                <label>Prénom</label>
-                <input type="text" name="prenom" class="form-control" required>
-            </div>
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-            <div class="mb-3">
-                <label>Téléphone</label>
-                <input type="text" name="telephone" class="form-control">
-            </div>
+            <form method="POST" action="/clients/store">
+                @csrf
 
-            <div class="mb-3">
-                <label>Email</label>
-                <input type="email" name="email" class="form-control">
-            </div>
+                <div class="row">
 
-            <div class="mb-3">
-                <label>Adresse</label>
-                <input type="text" name="adresse" class="form-control">
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">
+                            Nom
+                        </label>
 
-            <button class="btn btn-primary">
-                Enregistrer
-            </button>
+                        <input type="text"
+                               name="nom"
+                               class="form-control"
+                               placeholder="Entrer le nom"
+                               required>
+                    </div>
 
-            <a href="/clients" class="btn btn-secondary">
-                Retour
-            </a>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">
+                            Prénom
+                        </label>
 
-        </form>
+                        <input type="text"
+                               name="prenom"
+                               class="form-control"
+                               placeholder="Entrer le prénom"
+                               required>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">
+                            Téléphone
+                        </label>
+
+                        <input type="text"
+                               name="telephone"
+                               class="form-control"
+                               placeholder="77 000 00 00">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">
+                            Email
+                        </label>
+
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               placeholder="exemple@email.com">
+                    </div>
+
+                </div>
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-bold">
+                        Adresse
+                    </label>
+
+                    <input type="text"
+                           name="adresse"
+                           class="form-control"
+                           placeholder="Entrer l'adresse du client">
+
+                </div>
+
+                <div class="d-flex justify-content-end">
+
+                    <a href="/clients"
+                       class="btn btn-secondary me-2">
+                        Retour
+                    </a>
+
+                    <button type="submit"
+                            class="btn text-white"
+                            style="background:#f97316;">
+                         Enregistrer
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 
