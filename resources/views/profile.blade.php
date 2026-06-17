@@ -8,14 +8,14 @@ body{
     background:#f5f7fb;
 }
 
-/* CONTAINER (même que password) */
+/* CONTAINER */
 .profile-container{
     max-width:550px;
     margin:auto;
     margin-top:30px;
 }
 
-/* CARD (même style) */
+/* CARD */
 .profile-card{
     background:white;
     padding:35px;
@@ -24,7 +24,7 @@ body{
     border-top:5px solid #ff6a00;
 }
 
-/* AVATAR (même logique icône) */
+/* AVATAR */
 .avatar{
     width:80px;
     height:80px;
@@ -35,7 +35,7 @@ body{
     align-items:center;
     margin:auto;
     margin-bottom:20px;
-    font-size:30px;
+    font-size:26px;
     color:white;
     font-weight:bold;
     box-shadow:0 8px 20px rgba(37,99,235,0.25);
@@ -45,7 +45,7 @@ body{
 .profile-card h2{
     text-align:center;
     color:#1e3a8a;
-    margin-bottom:25px;
+    margin-bottom:5px;
     font-size:26px;
 }
 
@@ -53,11 +53,11 @@ body{
 .subtitle{
     text-align:center;
     color:#64748b;
-    margin-bottom:25px;
+    margin-bottom:20px;
     font-size:14px;
 }
 
-/* INFO BLOCK (style input-like pour homogénéité) */
+/* INFO BLOCK */
 .info-box{
     margin-bottom:18px;
 }
@@ -79,33 +79,43 @@ body{
     color:#333;
 }
 
-/* BUTTON (même orange que password) */
-.btn{
-    width:100%;
+/* BUTTON (Style lien propre) */
+.btn-action{
+    display: block;
+    text-align: center;
+    text-decoration: none;
     background:linear-gradient(135deg,#ff6a00,#e65c00);
     color:white;
     border:none;
     padding:15px;
     border-radius:12px;
-    cursor:pointer;
     font-size:15px;
     font-weight:bold;
     transition:0.3s;
     box-shadow:0 6px 18px rgba(255,106,0,0.25);
-    margin-top:10px;
+    margin-top:20px;
 }
 
-.btn:hover{
+.btn-action:hover{
     transform:translateY(-2px);
     box-shadow:0 10px 25px rgba(255,106,0,0.35);
+    color: white;
 }
 
 /* ROLE BADGE */
-.role{
+.role-badge{
     text-align:center;
-    margin-bottom:15px;
-    color:#ff6a00;
-    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.role-text {
+    background: #fff1e6;
+    color: #ff6a00;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
 }
 
 </style>
@@ -114,47 +124,61 @@ body{
 
     <div class="profile-card">
 
-        <!-- AVATAR -->
         <div class="avatar">
-            {{ strtoupper(substr($user->name,0,1)) }}
+            {{ strtoupper(substr($user->first_name, 0, 1) . substr($user->last_name, 0, 1)) }}
         </div>
 
-        <!-- TITLE -->
         <h2>Mon Profil</h2>
 
         <p class="subtitle">
-            Informations personnelles du compte EMS
+            Informations personnelles du compte
         </p>
 
-        <!-- ROLE -->
-        <div class="role">
-            {{ strtoupper($user->role) }}
+        <div class="role-badge">
+            <span class="role-text">
+                @if($user->profil == 'chef_agence') CHEF D'AGENCE
+                @elseif($user->profil == 'comptable') COMPTABLE
+                @elseif($user->profil == 'agent_comptoir') AGENT DE COMPTOIR
+                @else {{ strtoupper($user->profil) }}
+                @endif
+            </span>
         </div>
 
-        <!-- NAME -->
         <div class="info-box">
-            <div class="label">Nom complet</div>
-            <div class="value">{{ $user->name }}</div>
+            <div class="label">Prénom</div>
+            <div class="value">{{ $user->first_name }}</div>
         </div>
 
-        <!-- EMAIL -->
+        <div class="info-box">
+            <div class="label">Nom</div>
+            <div class="value">{{ $user->last_name }}</div>
+        </div>
+
         <div class="info-box">
             <div class="label">Email</div>
             <div class="value">{{ $user->email }}</div>
         </div>
 
-        <!-- DATE -->
         <div class="info-box">
-            <div class="label">Date inscription</div>
-            <div class="value">
-                {{ $user->created_at->format('d/m/Y') }}
-            </div>
+            <div class="label">Téléphone</div>
+            <div class="value">{{ $user->telephone ?? 'Non renseigné' }}</div>
         </div>
 
-        <!-- BUTTON -->
-        <a href="/modifier-mot-de-passe" class="btn">
-            Modifier mot de passe
-        </a>
+        <div class="info-box">
+            <div class="label">Adresse</div>
+            <div class="value">{{ $user->adresse ?? 'Non renseignée' }}</div>
+        </div>
+
+        <div class="info-box">
+            <div class="label">Statut du compte</div>
+           <div class="fw-bold {{ $user->statut == 'actif' ? 'text-success' : 'text-danger' }}">
+    {{ ucfirst($user->statut) }}
+</div>
+        </div>
+
+
+
+
 
     </div>
 

@@ -5,36 +5,77 @@ use App\Models\Paiement;
 use App\Models\Factures;
 use Illuminate\Http\Request;
 use App\Models\Client;
+use App\Models\Reservation;
 
 class PaiementController extends Controller
 {
-public function index()
-{
-    $paiements = Paiement::with('client')->latest()->get();
-    $clients = Client::all(); //
 
-    return view('paiements.index', compact('paiements', 'clients'));
+
+public function index() {
+        $paiements = Paiement::latest()->get();
+        $clients = Client::all();
+        // Affiche la liste des paiements et le formulaire de saisie
+        return view('comptable.paiements.index', compact('paiements', 'clients'));
+    }
+
+    public function store(Request $request)
+    {
+        // 1. Récupération directe des données envoyées par le formulaire
+        $data = $request->only(['client_id', 'montant', 'mode_paiement']);
+
+        // 2. Ajout automatique de la date du jour
+        $data['date_paiement'] = now()->format('Y-m-d');
+
+        // 3. Insertion en base de données
+        Paiement::create($data);
+
+        // 4. Redirection vers le registre des paiements
+        return redirect()->route('paiements.index')->with('success', 'Paiement enregistré avec succès.');
+         }
+public function showBordereau($id)
+{
+    //  On charge le paiement directement avec son client associé
+    $paiement = Paiement::with('client')->findOrFail($id);
+
+    return view('comptable.paiements.bordereau', compact('paiement'));
 }
-public function store(Request $request)
+
+/**
+ *  DIRECTION : CHEF D'AGENCE
+ * Affiche l'historique des paiements en lecture seule (sans bouton d'ajout)
+ */
+public function chefIndex()
+{
+    // Récupère tous les paiements du plus récent au plus ancien avec les infos du client si la relation existe
+    $paiements = \App\Models\Paiement::with('client')->latest()->get();
+
+    // Renvoie vers la vue : resources/views/chef/paiements.blade.php
+    return view('chef.paiements', compact('paiements'));
+}
+public function update(Request $request, $id)
 {
     $request->validate([
-        'client_id' => 'required',
-        'montant' => 'required|numeric|min:1',
+        'montant' => 'required|numeric',
+        'mode_paiement' => 'required'
     ]);
 
-    // On ajoute 'date_paiement' avec la date et l'heure du jour (now())
-    Paiement::create([
-        'client_id' => $request->client_id,
+    $paiement = Paiement::findOrFail($id);
+
+    // On met à jour les données
+    $paiement->update([
         'montant' => $request->montant,
-        'date_paiement' => now(),
+        'mode_paiement' => $request->mode_paiement
     ]);
 
-    return back()->with('success', 'Paiement enregistré avec succès');
+    return back()->with('success', 'Paiement #'.$id.' mis à jour avec succès.');
 }
-public function create()
-{
-    $factures = Factures::all();
 
-    return view('paiements.create', compact('factures'));
+public function destroy($id)
+{
+    $paiement = Paiement::findOrFail($id);
+    $paiement->delete();
+
+    return back()->with('success', 'Paiement supprimé avec succès.');
 }
+
 }

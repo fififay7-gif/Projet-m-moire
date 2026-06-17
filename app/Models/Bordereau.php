@@ -3,19 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Bordereau extends Model
 {
-    // Si tu as utilisé le pluriel pour ta table dans la migration :
     protected $table = 'bordereaux';
 
-    protected $fillable = ['code_bordereau', 'date_creation', 'statut', 'user_id', 'observations'];
-
-    public function user() {
-        return $this->belongsTo(User::class);
+    // Si tes bordereaux sont liés à un client ou à un paiement, assure-toi d'avoir ceci :
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
-    public function versements() {
-        return $this->hasMany(Versement::class);
+    public function versements(): HasMany
+    {
+        return $this->hasMany(Versement::class, 'bordereau_id');
     }
 }

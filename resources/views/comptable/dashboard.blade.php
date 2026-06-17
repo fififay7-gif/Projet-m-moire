@@ -1,143 +1,71 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="container-fluid">
-
-    <div class="mb-4">
-        <h2 style="color:#0f2a6b;font-weight:bold;">
-             Dashboard Comptable EMS
-        </h2>
-        <p class="text-muted">
-            Suivi des factures, paiements et encaissements
-        </p>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark">Tableau de bord Comptable</h3>
+        <span class="text-muted small">Mise à jour : {{ date('d/m/Y H:i') }}</span>
     </div>
 
-    <div class="row g-4">
-
-        <!-- TOTAL FACTURES -->
-        <div class="col-md-3">
-            <div class="card border-0 shadow h-100">
-
-                <div class="card-body text-center">
-
-                    <div style="font-size:40px;"></div>
-
-                    <h6 class="text-muted mt-2">
-                        Total Factures
-                    </h6>
-
-                    <h2 style="color:#2563eb;font-weight:bold;">
-                        {{ $totalFactures }}
-                    </h2>
-
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6 class="text-secondary fw-semibold text-uppercase small">Total Réservations</h6>
+                    <h2 class="display-6 fw-bold mt-2 text-primary">{{ $totalReservations ?? 0 }}</h2>
                 </div>
-
             </div>
         </div>
-
-        <!-- TOTAL ENCAISSE -->
-        <div class="col-md-3">
-            <div class="card border-0 shadow h-100">
-
-                <div class="card-body text-center">
-
-                    <div style="font-size:40px;"></div>
-
-                    <h6 class="text-muted mt-2">
-                        Total Encaissé
-                    </h6>
-
-                    <h4 style="color:#16a34a;font-weight:bold;">
-                        {{ number_format($totalEncaisse,0,',',' ') }}
-                        FCFA
-                    </h4>
-
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6 class="text-secondary fw-semibold text-uppercase small">Versements (Juin)</h6>
+                    <h2 class="display-6 fw-bold mt-2 text-success">{{ $versementsMensuels ?? 0 }}</h2>
                 </div>
-
             </div>
         </div>
-
-        <!-- RESTE A PAYER -->
-        <div class="col-md-3">
-            <div class="card border-0 shadow h-100">
-
-                <div class="card-body text-center">
-
-                    <div style="font-size:40px;"></div>
-
-                    <h6 class="text-muted mt-2">
-                        Reste à Payer
-                    </h6>
-
-                    <h4 style="color:#f97316;font-weight:bold;">
-                        {{ number_format($resteAPayer,0,',',' ') }}
-                        FCFA
-                    </h4>
-
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6 class="text-secondary fw-semibold text-uppercase small">Total Paiements</h6>
+                    <h2 class="display-6 fw-bold mt-2 text-dark">{{ $totalPaiements ?? 0 }}</h2>
                 </div>
-
             </div>
         </div>
-
-        <!-- FACTURES IMPAYEES -->
-        <div class="col-md-3">
-            <div class="card border-0 shadow h-100">
-
-                <div class="card-body text-center">
-
-                    <div style="font-size:40px;"></div>
-
-                    <h6 class="text-muted mt-2">
-                        Factures Impayées
-                    </h6>
-
-                    <h2 style="color:#dc2626;font-weight:bold;">
-                        {{ $facturesImpayees }}
-                    </h2>
-
-                </div>
-
-            </div>
-        </div>
-
     </div>
 
-    <!-- DEUXIEME LIGNE -->
-
-    <div class="row mt-4">
-
-        <div class="col-md-6">
-
-            <div class="card border-0 shadow">
-
-                <div class="card-header text-white"
-                     style="background:linear-gradient(135deg,#0f2a6b,#2563eb);">
-
-                    <h5 class="mb-0">
-                        Factures Partiellement Payées
-                    </h5>
-
-                </div>
-
-                <div class="card-body text-center">
-
-                    <h1 style="color:#f97316;font-weight:bold;">
-                        {{ $facturesPartielles }}
-                    </h1>
-
-                    <p class="text-muted">
-                        Factures ayant reçu un paiement partiel
-                    </p>
-
-                </div>
-
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="text-secondary mb-4">Évolution des activités</h5>
+                <canvas id="myChart" height="80"></canvas>
             </div>
-
         </div>
-
     </div>
-
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    window.onload = function() {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Réservations', 'Versements', 'Paiements'],
+                datasets: [{
+                    label: 'Nombre d\'opérations',
+                    data: [{{ $totalReservations ?? 0 }}, {{ $versementsMensuels ?? 0 }}, {{ $totalPaiements ?? 0 }}],
+                    borderColor: '#0d6efd',
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+    };
+</script>
 @endsection

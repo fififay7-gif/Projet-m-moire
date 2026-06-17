@@ -3,16 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo; // Importation requise
 
 class Versement extends Model
 {
-    protected $fillable = ['reference_versement', 'montant', 'banque', 'date_versement', 'user_id', 'bordereau_id', 'preuve_achat'];
+    use SoftDeletes;
 
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = [
+        'paiement_id',
+        'user_id',
+        'reference_versement',
+        'montant',
+        'banque',
+        'date_versement'
+    ];
 
-    public function bordereau() {
-        return $this->belongsTo(Bordereau::class);
+    /**
+     * Un versement appartient à un paiement.
+     */
+    public function paiement(): BelongsTo
+    {
+        return $this->belongsTo(Paiement::class, 'paiement_id');
     }
 }

@@ -4,7 +4,6 @@
 
 <div class="container mt-4">
 
-    <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 style="color: #1e3a8a; font-weight: 800;">
              Nouveau Paiement
@@ -16,14 +15,12 @@
         </span>
     </div>
 
-    <!-- CARD FORM -->
     <div class="card shadow-sm border-0 p-4"
          style="border-radius: 16px; background: #ffffff;">
 
         <form action="{{ route('paiements.store') }}" method="POST">
             @csrf
 
-            <!-- CLIENT -->
             <div class="mb-3">
                 <label style="font-weight:600; color:#1e3a8a;">
                     Client
@@ -38,14 +35,13 @@
 
                     @foreach($clients as $client)
                         <option value="{{ $client->id }}">
-                            {{ $client->nom }}
+                            {{ $client->prenom ?? '' }} {{ $client->nom }}
                         </option>
                     @endforeach
 
                 </select>
             </div>
 
-            <!-- MONTANT -->
             <div class="mb-3">
                 <label style="font-weight:600; color:#1e3a8a;">
                     Montant payé (FCFA)
@@ -59,7 +55,24 @@
                        required>
             </div>
 
-            <!-- BUTTON -->
+            <div class="mb-4">
+                <label style="font-weight:600; color:#1e3a8a;">
+                    Mode de Règlement
+                </label>
+
+                <select name="mode_paiement"
+                        class="form-control"
+                        style="border-radius: 10px; border: 1px solid #d1d5db;"
+                        required>
+                    <option value="">-- Choisir le mode de paiement --</option>
+                    <option value="Espèces">Espèces</option>
+                    <option value="Wave">Wave</option>
+                    <option value="Orange Money">Orange Money</option>
+                    <option value="Chèque">Chèque</option>
+                    <option value="Virement Bancaire">Virement Bancaire</option>
+                </select>
+            </div>
+
             <button type="submit"
                     class="btn w-100 fw-bold"
                     style="background: linear-gradient(135deg, #10b981, #059669);

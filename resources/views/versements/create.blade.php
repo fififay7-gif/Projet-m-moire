@@ -38,11 +38,16 @@
 
                     <option value="">-- Choisir un bordereau --</option>
 
-                    @foreach($bordereaux as $b)
-                        <option value="{{ $b->id }}">
-                            {{ $b->numero_bordereau }}
-                        </option>
-                    @endforeach
+                   @foreach($bordereaux as $b)
+    {{--  L'attribut value doit TOUJOURS envoyer l'ID pour la base de données --}}
+    <option value="{{ $b->id }}">
+        Bordereau n°{{ $b->numero_bordereau ?? $b->code ?? $b->id }}
+        {{--  Si le bordereau possède un client lié, on affiche son nom à côté --}}
+        @if($b->client)
+            - Client : {{ $b->client->nom }} {{ $b->client->prenom ?? '' }}
+        @endif
+    </option>
+@endforeach
 
                 </select>
             </div>

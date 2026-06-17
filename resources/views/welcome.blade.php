@@ -1,212 +1,222 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>EMS Sénégal - Gestion de Stock</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMS Voyage — Gestion des Clients</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff; /* Le blanc domine sur le corps de page */
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-<style>
+        /* BARRE EN HAUT : EN BLEU ROYAL */
+        .navbar-ems {
+            background-color: #1e3a8a; /* Bleu EMS officiel */
+            border-bottom: 3px solid #ff6a00; /* Fine ligne de séparation orange */
+            padding: 12px 0;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.15);
+        }
 
-:root{
-  --blue:#1e3a8a;
-  --blue2:#2563eb;
-  --orange:#f97316;
-  --bg:#f6f8fc;
-  --text:#0f172a;
-  --muted:#64748b;
-}
+        .main-hero {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 60px 0;
+        }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Inter, sans-serif;
-}
+        /* Titre principal */
+        .hero-title {
+            color: #1e3a8a;
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
 
-body{
-  background:var(--bg);
-  color:var(--text);
-}
+        .hero-title span {
+            color: #ff6a00;
+        }
 
-/* NAV */
-nav{
-  height:75px;
-  background:white;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 50px;
-  border-bottom:1px solid #e5e7eb;
-}
+        .hero-text {
+            font-size: 1.1rem;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+        /* Bouton d'action Orange EMS */
+        .btn-ems-orange {
+            background: linear-gradient(135deg, #ff6a00, #e65c00);
+            color: white !important;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 14px 32px;
+            border-radius: 12px;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 6px 20px rgba(255, 106, 0, 0.3);
+        }
 
-/* LOGO IMAGE */
-.logo img{
-  width:45px;
-  height:45px;
-  object-fit:contain;
-}
+        .btn-ems-orange:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 106, 0, 0.4);
+        }
 
-/* TEXT LOGO */
-.logo-text strong{
-  color:var(--blue);
-  font-size:16px;
-}
+        /* Zone de droite : Grille d'informations */
+        .color-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+        }
 
-.logo-text small{
-  font-size:12px;
-  color:var(--muted);
-}
+        .color-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
 
-/* BUTTONS */
-.btn{
-  padding:10px 16px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:600;
-  font-size:14px;
-}
+        .icon-box-blue {
+            width: 44px;
+            height: 44px;
+            background-color: #eff6ff;
+            color: #1e3a8a;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
 
-.btn-login{
-  border:1px solid var(--blue);
-  color:var(--blue);
-}
+        .icon-box-orange {
+            width: 44px;
+            height: 44px;
+            background-color: #fff7ed;
+            color: #ff6a00;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
 
-.btn-login:hover{
-  background:var(--blue);
-  color:white;
-}
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
 
-.btn-primary{
-  background:var(--orange);
-  color:white;
-}
+        .card-text {
+            font-size: 13.5px;
+            color: #64748b;
+            margin: 0;
+        }
 
-.btn-primary:hover{
-  background:#ea580c;
-}
-
-/* HERO CENTER */
-.hero{
-  min-height:calc(100vh - 75px);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:40px;
-}
-
-.hero-box{
-  max-width:800px;
-}
-
-.badge{
-  display:inline-block;
-  background:#e8eefc;
-  color:var(--blue);
-  padding:7px 14px;
-  border-radius:20px;
-  font-size:12px;
-  margin-bottom:20px;
-  font-weight:500;
-}
-
-.hero h1{
-  font-size:52px;
-  color:var(--blue);
-  margin-bottom:20px;
-  font-weight:700;
-}
-
-.hero h1 span{
-  color:var(--orange);
-}
-
-.hero p{
-  color:var(--muted);
-  font-size:16px;
-  line-height:1.8;
-  margin-bottom:30px;
-}
-
-/* ACTION BUTTONS */
-.actions{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-}
-
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:25px;
-  color:var(--muted);
-  font-size:13px;
-  border-top:1px solid #e5e7eb;
-}
-
-</style>
+        .footer-ems {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            padding: 15px 0;
+            font-size: 13px;
+            border-top: 3px solid #ff6a00;
+        }
+    </style>
 </head>
-
 <body>
+<nav class="navbar-ems">
+    <div class="container d-flex justify-content-between align-items-center">
 
-<!-- NAV -->
-<nav>
+        <a href="/">
+            <img src="{{ asset('images/ems-logo.png') }}" alt="EMS Voyage" style="height: 60px; width: auto; object-fit: contain;">
+        </a>
 
-  <div class="logo">
-    <!--  LOGO EMS ICI -->
-    <img src="/images/Ems-Logo.png" alt="EMS Logo">
 
-    <div class="logo-text">
-      <strong>EMS Sénégal</strong><br>
-      <small>Gestion de stock</small>
     </div>
-  </div>
-
-  <div>
-    <a href="/login" class="btn btn-login">Connexion</a>
-    <a href="/login" class="btn btn-primary">Accéder</a>
-  </div>
-
 </nav>
 
-<!-- HERO CENTER -->
-<section class="hero">
+    <main class="main-hero">
+        <div class="container">
+            <div class="row align-items-center g-5">
 
-  <div class="hero-box">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">
+                        Bienvenue dans la gestion des clients de <span>EMS Voyage</span>
+                    </h1>
+                    <p class="hero-text">
+                        Sécurisez, centralisez et optimisez le suivi complet de vos dossiers voyageurs, fiches clients, abonnements et l'historique de leurs déplacements sur tout le réseau.
+                    </p>
 
-    <div class="badge">Système officiel EMS Sénégal</div>
+                    <a href="/login" class="btn-ems-orange">
+                        <span>Ouvrir la session d'administration</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
 
-    <h1>
-      Gestion de Stock<br>
-      <span> intelligente</span>
-    </h1>
+                <div class="col-lg-6">
+                    <div class="row g-3">
 
-    <p>
-      Optimisez la gestion de vos produits, suivez vos mouvements de stock
-      en temps réel et améliorez votre logistique avec une solution moderne
-      conçue pour EMS Sénégal.
-    </p>
+                        <div class="col-sm-6">
+                            <div class="color-card" style="border-top: 4px solid #1e3a8a;">
+                                <div class="icon-box-blue">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                                <h5 class="card-title">Portail Client</h5>
+                                <p class="card-text">Fiches d'identité, coordonnées et gestion de la fidélité.</p>
+                            </div>
+                        </div>
 
-    <div class="actions">
-      <a href="/login" class="btn btn-primary">Se connecter</a>
-      <a href="/login" class="btn btn-login">Connexion rapide</a>
-    </div>
+                        <div class="col-sm-6">
+                            <div class="color-card" style="border-top: 4px solid #ff6a00;">
+                                <div class="icon-box-orange">
+                                    <i class="fa-solid fa-ticket"></i>
+                                </div>
+                                <h5 class="card-title">Réservations</h5>
+                                <p class="card-text">Liaison automatique des billets émis avec le profil passager.</p>
+                            </div>
+                        </div>
 
-  </div>
+                        <div class="col-12">
+                            <div class="color-card" style="background-color: #f8fafc; border-left: 4px solid #137333;">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="icon-box-blue" style="margin-bottom:0; background: white;">
+                                        <i class="fa-solid fa-shield-halved" style="color: #137333;"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="card-title" style="margin-bottom:2px;">Sécurité Maximale</h5>
+                                        <p class="card-text">Authentification chiffrée conforme aux exigences de l'organisation.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-</section>
+                    </div>
+                </div>
 
-<footer>
-  © 2026 EMS Sénégal - Gestion de Stock | Tous droits réservés
-</footer>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-ems text-center">
+        <div class="container text-white-50">
+            &copy; 2026 <strong class="text-white">EMS Voyage</strong> — Espace d'administration technique et commercial interne.
+        </div>
+    </footer>
 
 </body>
 </html>

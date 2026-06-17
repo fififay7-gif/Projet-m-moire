@@ -11,25 +11,37 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('reservations', function (Blueprint $table) {
-    $table->id();
+        Schema::create('reservations', function (Blueprint $table) {
+            $table->id();
 
-    $table->foreignId('client_id')->constrained()->onDelete('cascade');
+            // 🔑 Code unique de la réservation (ex: RES-2026-XF83)
+            $table->string('code')->unique();
 
-    $table->string('type_service')->nullable();
-    $table->text('description')->nullable();
+            // 👥 Relation avec le client
+            $table->foreignId('client_id')->constrained()->onDelete('cascade');
 
-    $table->enum('statut', [
-        'en_attente',
-        'validee',
-        'rejetee',
-        'terminee'
-    ])->default('en_attente');
+            // ✈️ Nouvelles colonnes requises
+            $table->string('destination');
+            $table->string('classe');
 
-    $table->date('date_reservation')->nullable();
+            // 📝 Optionnels / Anciens champs conservés pour la compatibilité
+            $table->string('type_service')->nullable();
+            $table->text('description')->nullable();
+            $table->string('motif_rejet')->nullable(); // Requis pour le rejet du Chef d'agence
 
-    $table->timestamps();
-});
+            // 📊 Cycles de vie du statut
+            $table->enum('statut', [
+                'en_attente',
+                'validee',
+                'rejetee',
+                'terminee'
+            ])->default('en_attente');
+
+            // 📅 Date et Heure de la réservation
+            $table->dateTime('date_reservation')->nullable();
+
+            $table->timestamps();
+        });
     }
 
     /**

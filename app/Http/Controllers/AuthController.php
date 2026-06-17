@@ -14,35 +14,26 @@ class AuthController extends Controller
 
     public function login(Request $request)
 {
+    // 1. Validation des champs
     $credentials = $request->validate([
         'email' => 'required|email',
-        'password' => 'required'
+        'password' => 'required',
     ]);
 
-    if (!Auth::attempt($credentials)) {
+    // 2. Tentative de connexion
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
 
-        return back()->withErrors([
-            'email' => 'Email ou mot de passe incorrect'
-        ])->withInput();
+        
+        // On redirige FORCÉMENT vers '/dashboard' pour que le tri des rôles se fasse !
+        return redirect('/dashboard');
     }
 
-    $request->session()->regenerate();
-
-    $user = Auth::user();
-
-    // Première connexion
-    if ($user->must_change_password == 1) {
-        return redirect('/change-password');
-    }
-
-    // Redirection selon le rôle
-    if ($user->role === 'admin') {
-        return redirect('/admin/dashboard');
-    }
-
-    return redirect('/user/dashboard');
+    // Si ça échoue
+    return back()->withErrors([
+        'email' => 'Les identifiants ne correspondent pas.',
+    ])->onlyInput('email');
 }
-
     public function logout(Request $request)
     {
         Auth::logout();

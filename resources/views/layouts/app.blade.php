@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Voyage - Système de Gestion</title>
+    <title>EMS Voyage -  Gestion des Clients</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* ===== RESET & BASE ===== */
         *, *::before, *::after {
@@ -147,8 +147,8 @@
 }
 
         .logo-box-inline img {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
     background: rgb(255, 255, 255);
     padding: 6px;
@@ -399,13 +399,37 @@
 
 @php
     $user = Auth::user();
+    // Nettoyage de la variable de rôle
+    $userProfil = $user ? strtolower(trim($user->profil)) : '';
+
+    // Génération propre des initiales
+    $initials = '--';
+    if ($user && !empty($user->name)) {
+        $nameParts = explode(' ', trim($user->name));
+        $firstLetter = substr($nameParts[0], 0, 1);
+        $secondLetter = isset($nameParts[1]) ? substr($nameParts[1], 0, 1) : '';
+        $initials = strtoupper($firstLetter . $secondLetter);
+    }
+@endphp
+@php
+    $user = Auth::user();
+    $userProfil = $user ? strtolower(trim($user->profil)) : '';
+
+    // Génération dynamique des initiales
     $initials = '--';
     if ($user) {
-        $nameParts = explode(' ', $user->name);
-        $initials = strtoupper(
-            substr($nameParts[0] ?? '', 0, 1) .
-            substr($nameParts[1] ?? '', 0, 1)
-        );
+        if (!empty($user->first_name) || !empty($user->last_name)) {
+            // Si tu as des colonnes first_name et last_name séparées
+            $firstLetter = substr($user->first_name, 0, 1);
+            $secondLetter = substr($user->last_name, 0, 1);
+            $initials = strtoupper($firstLetter . $secondLetter);
+        } elseif (!empty($user->name)) {
+            // Sinon, si tout est dans la colonne name (ex: "Mouhamed Faye")
+            $nameParts = explode(' ', trim($user->name));
+            $firstLetter = substr($nameParts[0], 0, 1);
+            $secondLetter = isset($nameParts[1]) ? substr($nameParts[1], 0, 1) : '';
+            $initials = strtoupper($firstLetter . $secondLetter);
+        }
     }
 @endphp
 
@@ -413,138 +437,123 @@
 <div class="header">
     <div class="topbar-left">
         <div class="logo-box-inline">
-            <img src="{{ asset('images/ems-logo.png') }}" alt="Logo EMS">
+            <img src="{{ asset('images/Ems-Logo.png') }}" alt="Logo EMS">
             <div class="logo-text">
                 <h2>EMS Voyage</h2>
-                <p>Gestion Systèmes</p>
+                <p>Gestion des Clients</p>
             </div>
         </div>
 
-        <h3>Espace
-            @if($user->role === 'administrateur')
+        <h3>Espace :
+            @if($userProfil === 'admin' || $userProfil === 'administrateur')
                 Administration Système
-            @elseif($user->role === 'chef_agence')
-                Direction
-            @elseif($user->role === 'comptable')
+            @elseif($userProfil === 'chef agence' || $userProfil === 'chef_agence')
+                Direction (Chef d'Agence)
+            @elseif($userProfil === 'comptable')
                 Comptabilité
-            @elseif($user->role === 'agent_comptoir')
+            @elseif($userProfil === 'agent_comptoir' || $userProfil === 'agent comptoir')
                 Saisie Comptoir
+            @else
+                Mon Espace
             @endif
         </h3>
     </div>
 
     <div class="topbar-right">
-        <div class="search-box d-none d-md-flex">
-            <i class="ti ti-search"></i>
-            <input type="text" placeholder="Rechercher...">
-        </div>
-
-        <div class="icon-btn">
-            <i class="ti ti-bell"></i>
-            <span class="notif-dot"></span>
-        </div>
-
         <div class="profile-pill" onclick="toggleMenu(event)">
+            <span class="profile-name">
+                {{ Auth::user()->first_name ?? $user->name }}
+            </span>
+
             <div class="profile-avatar">
                 {{ $initials }}
             </div>
-            <span class="profile-name">{{ $user->name }}</span>
+
             <i class="ti ti-chevron-down chevron"></i>
+        </div>
 
-            <div class="dropdown-content" id="profileDropdown">
-                <div class="dd-header">
-                    <div class="dd-name">{{ $user->name }}</div>
-                    <div class="dd-email">{{ $user->email }}</div>
-                </div>
-
-                <a href="/profile">
-                    <i class="ti ti-user"></i> Mon profil
-                </a>
-
-                <a href="/change-password">
-                    <i class="ti ti-lock"></i> Changer mot de passe
-                </a>
-
-                <div class="dropdown-divider"></div>
-
-                <form method="POST" action="/logout">
-                    @csrf
-                    <button type="submit" class="logout-btn" onclick="return confirm('Voulez-vous vraiment vous déconnecter ?')">
-                        <i class="ti ti-logout"></i> Déconnexion
-                    </button>
-                </form>
+        <div class="dropdown-content" id="profileDropdown">
+            <div class="dd-header">
+                <div class="dd-name">{{ $user->name }}</div>
+                <div class="dd-email">{{ $user->email }}</div>
             </div>
+
+            <a href="/profile">
+                <i class="ti ti-user"></i> Mon profil
+            </a>
+
+            <a href="/change-password">
+                <i class="ti ti-lock"></i> Changer mot de passe
+            </a>
+
+            <div class="dropdown-divider"></div>
+
+           <button type="button"
+        class="logout-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#logoutModal">
+    <i class="ti ti-logout"></i> Déconnexion
+</button>
         </div>
     </div>
 </div>
 
 <div class="sidebar">
-    <div class="sidebar-heading">Principal</div>
+    <div class="sidebar-heading"></div>
     <a href="/dashboard" class="{{ request()->is('dashboard') ? 'active' : '' }}">
         <i class="ti ti-layout-dashboard"></i> Dashboard Accueil
     </a>
 
-    {{-- ROLE ADMINISTRATEUR --}}
-    @if($user->role === 'administrateur')
-        <div class="sidebar-heading" style="color: #ef4444;">Administration</div>
+    {{-- ✔️ ROLE ADMINISTRATEUR --}}
+    @if(str_contains($userProfil, 'admin'))
         <a href="/users" class="{{ request()->is('users*') ? 'active' : '' }}">
-            <i class="ti ti-users-gear"></i> Gérer les utilisateurs
+            <i class="ti ti-users-gear"></i> Utilisateurs
         </a>
     @endif
 
-    {{-- ROLE CHEF AGENCE --}}
-    @if($user->role === 'chef_agence')
+    {{-- ✔ ROLE CHEF AGENCE --}}
+    @if(str_contains($userProfil, 'chef') || str_contains($userProfil, 'agence'))
+       <a href="{{ route('chef.clients.index') }}" class="{{ request()->routeIs('chef.clients.index') ? 'active' : '' }}">
+    <i class="ti ti-users"></i> Liste des Clients
+</a>
+       <a href="/chef/reservations" class="{{ request()->is('chef/reservations*') ? 'active' : '' }}">
+    <i class="ti ti-calendar-event"></i> Liste des réservations
+</a>
+        </a>
+
+        <a href="{{ route('paiements.index') }}" class="{{ request()->routeIs('paiements.index') ? 'active' : '' }}">
+        <i class="ti ti-currency-dollar"></i> Liste des Paiements
+    </a>
+       <a href="/versements" class="{{ request()->is('versements*') ? 'active' : '' }}">
+            <i class="ti ti-building-bank"></i> Versements Banque
+        </a>
+    @endif
+
+    {{-- ✔️ ROLE COMPTABLE --}}
+    @if(str_contains($userProfil, 'comptable'))
         <div class="sidebar-heading"></div>
-        <a href="/clients" class="{{ request()->is('clients*') ? 'active' : '' }}">
-            <i class="ti ti-user-circle"></i> Base Clients
-        </a>
-        <a href="/reservations" class="{{ request()->is('reservations*') ? 'active' : '' }}">
-            <i class="ti ti-calendar-event"></i> Réservations globales
-        </a>
-        <a href="/factures" class="{{ request()->is('factures*') ? 'active' : '' }}">
-            <i class="ti ti-file-invoice"></i> Suivi des factures
-        </a>
-        <a href="/bordereaux" class="{{ request()->is('bordereaux*') ? 'active' : '' }}">
-            <i class="ti ti-clipboard-list"></i> Tous les Bordereaux
-        </a>
-        <a href="/versements" class="{{ request()->is('versements*') ? 'active' : '' }}">
-            <i class="ti ti-cash"></i> Versements Banque
-        </a>
+        <a href="/comptable/reservations" class="{{ request()->is('comptable/reservations*') ? 'active' : '' }}">
+    <i class="ti ti-file-analytics"></i> Liste des Réservations
+</a>
 
-    @endif
-
-    {{-- ROLE COMPTABLE --}}
-    @if($user->role === 'comptable')
-        <div class="sidebar-heading">Gestion Financière</div>
-        <a href="/factures" class="{{ request()->is('factures*') ? 'active' : '' }}">
-            <i class="ti ti-file-analytics"></i> Factures à valider
-        </a>
-        <a href="/paiements" class="{{ request()->is('paiements*') ? 'active' : '' }}">
-            <i class="ti ti-credit-card"></i> Suivi des Paiements
-        </a>
-        <a href="/bordereaux" class="{{ request()->is('bordereaux*') ? 'active' : '' }}">
-            <i class="ti ti-clipboard-check"></i> Bordereaux d'envoi
-        </a>
+       <a href="{{ route('paiements.index') }}" class="{{ request()->is('comptable/paiements*') ? 'active' : '' }}">
+    <i class="ti ti-clipboard-check"></i> Suivi des Paiements
+</a>
         <a href="/versements" class="{{ request()->is('versements*') ? 'active' : '' }}">
             <i class="ti ti-building-bank"></i> Versements Banque
         </a>
     @endif
 
-    {{-- ROLE AGENT COMPTOIR --}}
-    @if($user->role === 'agent_comptoir')
-        <div class="sidebar-heading">Opérations Guichet</div>
+    {{-- ✔️ ROLE AGENT COMPTOIR --}}
+    @if(str_contains($userProfil, 'comptoir') || str_contains($userProfil, 'agent'))
+        <div class="sidebar-heading"></div>
         <a href="/clients" class="{{ request()->is('clients*') ? 'active' : '' }}">
             <i class="ti ti-user-plus"></i> Gestion Clients
         </a>
         <a href="/reservations" class="{{ request()->is('reservations*') ? 'active' : '' }}">
-            <i class="ti ti-calendar-plus"></i> Prise de Réservation
+            <i class="ti ti-calendar-plus"></i>Gestion des Réservations
         </a>
-        <a href="/factures" class="{{ request()->is('factures*') ? 'active' : '' }}">
-            <i class="ti ti-file-text"></i> Émettre une Facture
-        </a>
-        <a href="/paiements" class="{{ request()->is('paiements*') ? 'active' : '' }}">
-            <i class="ti ti-coin"></i> Saisir un paiement
-        </a>
+
     @endif
 </div>
 @endif
@@ -564,6 +573,29 @@ document.addEventListener('click', function () {
     if (dd) dd.classList.remove('show');
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content" style="border-radius: 16px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
 
+      <div class="modal-body text-center pt-4 pb-3">
+        <i class="ti ti-logout" style="font-size: 2.5rem; color: #1e3a8a;"></i>
+        <h6 class="mt-3 fw-bold" style="color: #1e3a8a;">Déconnexion</h6>
+        <p class="text-muted" style="font-size: 13px;">Voulez-vous vraiment quitter votre session ?</p>
+      </div>
+
+      <div class="modal-footer border-0 justify-content-center pt-0 pb-3">
+        <button type="button" class="btn btn-light btn-sm px-3" style="border-radius: 8px; color: #6b7280;" data-bs-dismiss="modal">Annuler</button>
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="btn btn-sm px-3" style="border-radius: 8px; background-color: #f97316; color: white;">
+                Oui
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

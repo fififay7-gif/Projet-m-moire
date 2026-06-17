@@ -18,7 +18,8 @@ return new class extends Migration
         $table->string('banque'); // Exemple: CBAO, SGBS, Ecobank...
         $table->date('date_versement');
         $table->foreignId('user_id')->constrained()->onDelete('cascade'); // L'agent qui fait l'action
-        $table->foreignId('bordereau_id')->nullable()->constrained('bordereaux')->onDelete('set null'); // Optionnel au début
+        // Dans ton fichier xxxx_create_versements_table.php
+$table->foreignId('paiement_id')->constrained('paiements')->onDelete('cascade');// Optionnel au début
         $table->string('preuve_achat')->nullable(); // Pour stocker le scan du reçu (PDF/Image)
         $table->timestamps();
     });
