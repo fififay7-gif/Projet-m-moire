@@ -437,7 +437,7 @@
 <div class="header">
     <div class="topbar-left">
         <div class="logo-box-inline">
-            <img src="{{ asset('images/Ems-Logo.png') }}" alt="Logo EMS">
+            <img src="{{ asset('images/logo-ems.jpeg') }}" alt="Logo EMS">
             <div class="logo-text">
                 <h2>EMS Voyage</h2>
                 <p>Gestion des Clients</p>
